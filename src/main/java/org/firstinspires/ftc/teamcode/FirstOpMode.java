@@ -21,7 +21,7 @@ import com.qualcomm.robotcore.hardware.Servo;
  */
 @TeleOp
 //@Autonomous
-//@Disabled
+@Disabled
 public class FirstOpMode extends LinearOpMode {
     private Gyroscope imu;
     private DcMotor motorTest;
