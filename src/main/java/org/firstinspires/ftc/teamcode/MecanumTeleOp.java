@@ -79,6 +79,7 @@ public class MecanumTeleOp extends LinearOpMode {
             backLeftMotor.setPower(backLeftPower/2);
             frontRightMotor.setPower(frontRightPower/2);
             backRightMotor.setPower(backRightPower/2);
+            armMotor.setPower(powerArmY);
         }
     }
 }
