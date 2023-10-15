@@ -75,11 +75,12 @@ public class MecanumTeleOp extends LinearOpMode {
             double backRightPower = (chassisY + chassisX - chassisTurn) / denominator;
             double powerArmY = armY;
 
-            frontLeftMotor.setPower(frontLeftPower/2);
-            backLeftMotor.setPower(backLeftPower/2);
-            frontRightMotor.setPower(frontRightPower/2);
-            backRightMotor.setPower(backRightPower/2);
-            armMotor.setPower(powerArmY);
+            double powerRatio = 0.7;
+            frontLeftMotor.setPower(powerRatio * frontLeftPower);
+            backLeftMotor.setPower(powerRatio * backLeftPower);
+            frontRightMotor.setPower(powerRatio * frontRightPower);
+            backRightMotor.setPower(powerRatio * backRightPower);
+            armMotor.setPower(powerArmY * .3);
         }
     }
 }
