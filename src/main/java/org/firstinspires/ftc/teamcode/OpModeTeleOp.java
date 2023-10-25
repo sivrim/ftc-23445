@@ -40,6 +40,7 @@ public class OpModeTeleOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         // Make sure your ID's match your configuration
         DcMotor armMotor = hardwareMap.dcMotor.get("armMotor");
+        DcServo clawServo = hardwareMap.dcServo.get("clawServo");
         MacanumWheels wheels = new MacanumWheels(hardwareMap);
 
         waitForStart();
@@ -56,6 +57,14 @@ public class OpModeTeleOp extends LinearOpMode {
             double powerArmY = armY;
             armMotor.setPower(powerArmY * .3);
 
+            boolean open = gamepad1.dpad_up;
+            boolean close = gamepad1.dpad_down;
+            
+            if (open);
+            clawServo.setPosition(1);
+            
+            if (close);
+            clawServo.setPosition(-1);
         }
     }
 }
