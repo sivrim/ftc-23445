@@ -1,6 +1,5 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.samples;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -22,7 +21,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp
 //@Autonomous
 @Disabled
-public class FirstOpMode extends LinearOpMode {
+public class SampleBasicOpMode extends LinearOpMode {
     private Gyroscope imu;
     private DcMotor motorTest;
     private DigitalChannel digitalTouch;
