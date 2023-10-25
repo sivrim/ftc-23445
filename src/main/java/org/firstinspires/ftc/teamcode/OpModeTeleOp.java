@@ -32,6 +32,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp(name="Teleop", group = "Furious Frog")
 @Disabled
@@ -41,6 +42,7 @@ public class OpModeTeleOp extends LinearOpMode {
         // Make sure your ID's match your configuration
         DcMotor armMotor = hardwareMap.dcMotor.get("armMotor");
         MacanumWheels wheels = new MacanumWheels(hardwareMap);
+        Servo clawServo = hardwareMap.servo.get("clawServo");
 
         waitForStart();
 
@@ -51,6 +53,15 @@ public class OpModeTeleOp extends LinearOpMode {
             double chassisX = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
             double chassisTurn = gamepad1.right_stick_x;
             wheels.move(chassisX, chassisY, chassisTurn);
+
+            boolean dpadUp = gamepad1.dpad_up;
+            boolean dpadDown = gamepad1.dpad_down;
+
+            if(dpadUp){
+                clawServo.setPosition(1);
+            } else if(dpadDown){
+                clawServo.setPosition(-1);
+            }
 
             double armY = gamepad2.left_stick_y;
             double powerArmY = armY;
