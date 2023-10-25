@@ -1,8 +1,8 @@
 **This plan is for autonomous drive only. Changes for Teleop will be made as the hardwares are being attached to the cotrol hub**
 
-| Step      | Effort | Planned Date     |Assigned     |
-| :---        |    :----:   |          ---: |          ---: |
-| Wheel translation and rotation      | 2 hours       | 10/25   | All   |
+| Step      | Effort | Planned Date     |Assigned     |Statud     |
+| :---        |    :----:   |          ---: |          ---: |---: |
+| Wheel translation and rotation      | 2 hours       | 10/25   | All   |Done   |
 | Auton step review      | 1 hours       | 10/27   | All   |
 | Drive forward 10 cm     | 4 hours       | 10/27 to 10/29   | Ani1 and Vishnu   |
 | Stop and exit in next steps if 30 seconds have elapsed     |        |    |    |
