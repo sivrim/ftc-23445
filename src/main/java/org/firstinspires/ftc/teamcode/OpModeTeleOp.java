@@ -54,8 +54,8 @@ public class OpModeTeleOp extends LinearOpMode {
             double chassisTurn = gamepad1.right_stick_x;
             wheels.move(chassisX, chassisY, chassisTurn);
 
-            boolean dpadUp = gamepad1.dpad_up;
-            boolean dpadDown = gamepad1.dpad_down;
+            boolean dpadUp = gamepad2.dpad_up;
+            boolean dpadDown = gamepad2.dpad_down;
 
             if(dpadUp){
                 clawServo.setPosition(1);
