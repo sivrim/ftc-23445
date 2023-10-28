@@ -5,10 +5,10 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class MacanumWheels {
-    DcMotor frontLeftMotor = null;
-    DcMotor backLeftMotor = null;
-    DcMotor frontRightMotor = null;
-    DcMotor backRightMotor = null;
+    public DcMotor frontLeftMotor = null;
+    public DcMotor backLeftMotor = null;
+    public DcMotor frontRightMotor = null;
+    public DcMotor backRightMotor = null;
 
     double powerRatio = 0.7;
     public MacanumWheels(HardwareMap hardwareMap) {
@@ -23,6 +23,10 @@ public class MacanumWheels {
         // See the note about this earlier on this page.
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+    }
+
+    public void stop(){
+        move(0,0,0);
     }
 
     public void goForward(){

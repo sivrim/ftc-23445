@@ -32,14 +32,25 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.HardwareDevice;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import java.util.List;
+
 @TeleOp(name="Teleop", group = "Furious Frog")
-@Disabled
+//@Disabled
 public class OpModeTeleOp extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         // Make sure your ID's match your configuration
+
+        List<HardwareMap.DeviceMapping<? extends HardwareDevice>> allDeviceMappings = hardwareMap.allDeviceMappings;
+
+        allDeviceMappings.forEach(d -> {
+            System.out.println(d.getDeviceTypeClass().getCanonicalName());
+        });
+
         DcMotor armMotor = hardwareMap.dcMotor.get("armMotor");
         MacanumWheels wheels = new MacanumWheels(hardwareMap);
         Servo clawServo = hardwareMap.servo.get("clawServo");
@@ -50,12 +61,18 @@ public class OpModeTeleOp extends LinearOpMode {
 
         while (opModeIsActive()) {
             double chassisY = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
+            System.out.println("gamepad1.left_stick_y is " + chassisY);
             double chassisX = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
+            System.out.println("gamepad1.left_stick_x is " + chassisX);
             double chassisTurn = gamepad1.right_stick_x;
+            System.out.println("chassisTurn is " + chassisTurn);
             wheels.move(chassisX, chassisY, chassisTurn);
 
-            boolean dpadUp = gamepad1.dpad_up;
-            boolean dpadDown = gamepad1.dpad_down;
+            boolean dpadUp = gamepad2.dpad_up;
+            boolean dpadDown = gamepad2.dpad_down;
+
+            System.out.println("dpadUp is " + dpadUp);
+            System.out.println("dpadDown is " + dpadDown);
 
             if(dpadUp){
                 clawServo.setPosition(1);
@@ -63,9 +80,11 @@ public class OpModeTeleOp extends LinearOpMode {
                 clawServo.setPosition(-1);
             }
 
+
             double armY = gamepad2.left_stick_y;
             double powerArmY = armY;
             armMotor.setPower(powerArmY * .3);
+            System.out.println("armMotor is " + armMotor);
 
         }
     }
