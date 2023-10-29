@@ -38,7 +38,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.List;
 
-@TeleOp(name="Teleop", group = "Furious Frog")
+@TeleOp(name = "Teleop", group = "Furious Frog")
 //@Disabled
 public class OpModeTeleOp extends LinearOpMode {
     @Override
@@ -54,7 +54,10 @@ public class OpModeTeleOp extends LinearOpMode {
         DcMotor armMotor = hardwareMap.dcMotor.get("armMotor");
         MacanumWheels wheels = new MacanumWheels(hardwareMap);
         Servo clawServo = hardwareMap.servo.get("clawServo");
-
+        DcMotor armMotor2 = null;
+        if (hardwareMap.dcMotor.contains("armMotor2")) {
+            armMotor2 = hardwareMap.dcMotor.get("armMotor2");
+        }
         waitForStart();
 
         if (isStopRequested()) return;
@@ -74,17 +77,28 @@ public class OpModeTeleOp extends LinearOpMode {
             System.out.println("dpadUp is " + dpadUp);
             System.out.println("dpadDown is " + dpadDown);
 
-            if(dpadUp){
+            if (dpadUp) {
                 clawServo.setPosition(1);
-            } else if(dpadDown){
+            } else if (dpadDown) {
                 clawServo.setPosition(-1);
             }
 
 
             double armY = gamepad2.left_stick_y;
-            double powerArmY = armY;
-            armMotor.setPower(powerArmY * .3);
+            double powerArmY = armY * .6;
+            armMotor.setPower(powerArmY);
             System.out.println("armMotor is " + armMotor);
+
+            if (armMotor2 != null) {
+                double armY2 = gamepad2.right_stick_y;
+                double powerArmY2 = armY2 * .8;
+                if (powerArmY2 > 0) {
+                    powerArmY2 = powerArmY2 * .5;
+                }
+                armMotor2.setPower(powerArmY2);
+
+            }
+
 
         }
     }
