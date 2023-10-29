@@ -54,7 +54,7 @@ public class OpModeTeleOp extends LinearOpMode {
         DcMotor armMotor = hardwareMap.dcMotor.get("armMotor");
         MacanumWheels wheels = new MacanumWheels(hardwareMap);
         Servo clawServo = hardwareMap.servo.get("clawServo");
-
+        DcMotor armMotor2 = hardwareMap.dcMotor.get("armMotor2");
         waitForStart();
 
         if (isStopRequested()) return;
@@ -82,10 +82,13 @@ public class OpModeTeleOp extends LinearOpMode {
 
 
             double armY = gamepad2.left_stick_y;
-            double powerArmY = armY;
-            armMotor.setPower(powerArmY * .3);
+            double powerArmY = armY; 
+            armMotor.setPower(powerArmY);
             System.out.println("armMotor is " + armMotor);
 
+         double armY2 = gamepad2.right_stick_y;
+            double powerArmY2 = armY2; 
+            armMotor.setPower(powerArmY2);
         }
     }
 }
