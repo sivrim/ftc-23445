@@ -17,5 +17,5 @@
   ![Image](./ftc_field.JPG)
 
 * Above image has been drawn [here](https://lucid.app/lucidchart/acd9e956-cdda-4175-85a8-a38ebbc6fadf/edit?invitationId=inv_7c0f06b6-3481-433a-99ce-fb8818bab92f). 
-* 
+  
 
