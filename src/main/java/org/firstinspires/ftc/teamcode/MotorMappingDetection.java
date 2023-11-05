@@ -30,20 +30,20 @@ public class MotorMappingDetection extends LinearOpMode {
 
         runtime.reset();
 
-        moveOneMotor(wheels, wheels.frontLeftMotor, "front left motor");
-        moveOneMotor(wheels, wheels.backLeftMotor, "back left motor");
-        moveOneMotor(wheels, wheels.backRightMotor, "back right motor");
-        moveOneMotor(wheels, wheels.frontRightMotor, "front right motor");
+        moveOneMotor(wheels, wheels.frontLeftMotor, "front left motor");//3
+        moveOneMotor(wheels, wheels.backLeftMotor, "back left motor");//2
+        moveOneMotor(wheels, wheels.backRightMotor, "back right motor");//0
+        moveOneMotor(wheels, wheels.frontRightMotor, "front right motor");//1
 
-        moveOneMotor(wheels, armMotor, "arm motor");
+//        moveOneMotor(wheels, armMotor, "arm motor");
 
         wheels.stop();
     }
 
     private void moveOneMotor(MacanumWheels wheels, DcMotor motor, String motorName) {
-        while (opModeIsActive() && (runtime.seconds() < 0.4)) {
+        while (opModeIsActive() && (runtime.seconds() < 3)) {
             telemetry.addData("Moving", motorName);
-            motor.setPower(1/2);
+            motor.setPower(1);
             telemetry.update();
         }
         wheels.stop();
@@ -53,7 +53,7 @@ public class MotorMappingDetection extends LinearOpMode {
     }
 
     private void pause() {
-        while (opModeIsActive() && (runtime.seconds() < 5)) {
+        while (opModeIsActive() && (runtime.seconds() < 3)) {
             telemetry.addData("Status", "Pause");
             telemetry.update();
         }
