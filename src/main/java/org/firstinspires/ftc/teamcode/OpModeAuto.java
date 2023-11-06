@@ -6,6 +6,13 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.vision.VisionPortal;
+import org.firstinspires.ftc.vision.tfod.TfodProcessor;
+
+import java.util.List;
+
 @Autonomous(name="Auto", group="Furious Frog")
 @Disabled
 public class OpModeAuto extends LinearOpMode
@@ -61,7 +68,28 @@ public class OpModeAuto extends LinearOpMode
         // Step 4: Move ahead remaining distance
         //TODO
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.0)) {
+        while (opModeIsActive() && (runtime.seconds() < 10.0)) {
+
+            TfodProcessor tfod = TfodProcessor.easyCreateWithDefaults();
+
+            VisionPortal visionPortal = VisionPortal.easyCreateWithDefaults(
+                    hardwareMap.get(WebcamName.class, "webcam"), tfod);
+
+            List<Recognition> currentRecognitions = tfod.getRecognitions();
+
+            if(currentRecognitions.size() == 1){
+                //find location, move robot and place purple pixel
+                
+                Recognition recognition = currentRecognitions.get(0);
+                telemetry.addData("recognition",
+                        String.format("recognition right %s, left %s, top %s,bottom %s ", recognition.getRight(),
+                        recognition.getLeft(), recognition.getTop(), recognition.getBottom()));
+                        visionPortal.stopStreaming();
+            } else {
+                telemetry.addData("no recognition", currentRecognitions.size());
+                //move robot to backstage
+            }
+
             telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
