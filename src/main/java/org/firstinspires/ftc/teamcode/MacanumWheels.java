@@ -31,23 +31,23 @@ public class MacanumWheels {
 
     public void goForward(){
         //TODO put the right values  -- Vishnu and Ani1
-        move(1,1,1);
+        move(0,1,0);
     }
 
     public void back(){
         //TODO put the right values  -- Vishnu and Ani1
-        move(1,1,1);
+        move(0,-1,0);
     }
 
     public void left90(){
         //TODO put the right values  -- Adi and Ani2
-        move(1,1,1);
+        move(0,0,-1);
         //TODO Stop once we have moved 90 degrees-- Adi
     }
 
     public void right90(){
         //TODO put the right values  -- Adi and Ani2
-        move(1,1,1);
+        move(0,0,1);
     }
 
     /**
