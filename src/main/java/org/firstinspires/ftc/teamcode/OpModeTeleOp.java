@@ -38,7 +38,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.List;
 
-@TeleOp(name = "Teleop", group = "Furious Frog")
+@TeleOp(name = "TeleopFF", group = "Furious Frog")
 //@Disabled
 public class OpModeTeleOp extends LinearOpMode {
     @Override
@@ -54,6 +54,7 @@ public class OpModeTeleOp extends LinearOpMode {
         DcMotor armMotor = hardwareMap.dcMotor.get("armMotor");
         MacanumWheels wheels = new MacanumWheels(hardwareMap);
         Servo clawServo = hardwareMap.servo.get("clawServo");
+        Servo armServo = hardwareMap.servo.get("armServo");
         DcMotor armMotor2 = null;
         if (hardwareMap.dcMotor.contains("armMotor2")) {
             armMotor2 = hardwareMap.dcMotor.get("armMotor2");
@@ -74,26 +75,42 @@ public class OpModeTeleOp extends LinearOpMode {
             boolean dpadUp = gamepad2.dpad_up;
             boolean dpadDown = gamepad2.dpad_down;
 
+            boolean dpadLeft = gamepad2.dpad_left;
+            boolean dpadRight = gamepad2.dpad_right;
+
+            telemetry.addData("dpad ", String.format("dpadUp : %s, dpadDown : %s, dpadLeft : %s, dpadRight : %s", dpadUp, dpadDown, dpadLeft, dpadRight));
+            telemetry.addData("Servo position before", String.format("claw %s arm %s", clawServo.getPosition(), armServo.getPosition()));
+
             System.out.println("dpadUp is " + dpadUp);
             System.out.println("dpadDown is " + dpadDown);
+            System.out.println("dpadRight is " + dpadRight);
+            System.out.println("dpadLeft is " + dpadLeft);
+
 
             if (dpadUp) {
-                clawServo.setPosition(1);
+                clawServo.setPosition(1/2);
             } else if (dpadDown) {
-                clawServo.setPosition(-1);
+                clawServo.setPosition(1/2);
             }
 
+            if (dpadRight) {
+                armServo.setPosition(1/2);
+            } else if (dpadLeft) {
+                armServo.setPosition(1/2);
+            }
+
+            telemetry.addData("Servo position after", String.format("claw %s arm %s", clawServo.getPosition(), armServo.getPosition()));
 
             double armY = gamepad2.left_stick_y;
-            double powerArmY = armY * .6;
+            double powerArmY = armY * 1;
             armMotor.setPower(powerArmY);
             System.out.println("armMotor is " + armMotor);
 
             if (armMotor2 != null) {
                 double armY2 = gamepad2.right_stick_y;
-                double powerArmY2 = armY2 * .8;
+                double powerArmY2 = armY2 * 1;
                 if (powerArmY2 > 0) {
-                    powerArmY2 = powerArmY2 * .5;
+                    powerArmY2 = powerArmY2 * 1;
                 }
                 armMotor2.setPower(powerArmY2);
 
