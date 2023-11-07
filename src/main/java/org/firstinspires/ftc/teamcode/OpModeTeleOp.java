@@ -36,6 +36,8 @@ import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.troubleshoot.Logs;
+
 import java.util.List;
 
 @TeleOp(name = "TeleopFF", group = "Furious Frog")
@@ -45,10 +47,12 @@ public class OpModeTeleOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         // Make sure your ID's match your configuration
 
+        Logs.setTelemetry(telemetry);
+
         List<HardwareMap.DeviceMapping<? extends HardwareDevice>> allDeviceMappings = hardwareMap.allDeviceMappings;
 
         allDeviceMappings.forEach(d -> {
-            System.out.println(d.getDeviceTypeClass().getCanonicalName());
+            telemetry.addData("Detected Device", d.getDeviceTypeClass().getCanonicalName());
         });
 
         DcMotor armMotor = hardwareMap.dcMotor.get("armMotor");

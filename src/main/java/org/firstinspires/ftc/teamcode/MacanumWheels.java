@@ -23,6 +23,7 @@ public class MacanumWheels {
         // See the note about this earlier on this page.
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+
     }
 
     public void stop(){
@@ -34,20 +35,30 @@ public class MacanumWheels {
         move(1,1,1);
     }
 
+    public void goForward(int targetTicks){
+        //TODO put the right values  -- Vishnu and Ani1
+        move(1,1,1, targetTicks);
+    }
+
+    public void back(int targetTicks){
+        //TODO put the right values  -- Vishnu and Ani1
+        move(1,1,1, targetTicks);
+    }
+
     public void back(){
         //TODO put the right values  -- Vishnu and Ani1
         move(1,1,1);
     }
 
+
     public void left90(){
-        //TODO put the right values  -- Adi and Ani2
         move(1,1,1);
         //TODO Stop once we have moved 90 degrees-- Adi
     }
 
     public void right90(){
-        //TODO put the right values  -- Adi and Ani2
         move(1,1,1);
+        //TODO Stop once we have moved 90 degrees-- Adi
     }
 
     /**
@@ -72,6 +83,14 @@ public class MacanumWheels {
         frontRightMotor.setPower(powerRatio * frontRightPower);
         backRightMotor.setPower(powerRatio * backRightPower);
     }
+
+    /**
+     * TODO move till desired movement is achieved
+     */
+    public void move(double x, double y, double turn, int targetTicks){
+
+    }
+
 
 
 }
