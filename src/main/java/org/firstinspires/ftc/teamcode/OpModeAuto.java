@@ -61,7 +61,7 @@ public class OpModeAuto extends LinearOpMode {
             double r = rightDistanceSensor.getDistance(DistanceUnit.INCH);
 
 
-            if ((inRange(l, 48, 60) && (inRange(r, 24, 36) || inRange(r, 72, 84)))) /* A4 */ {
+            if (inRange(l, 48, 60) && (inRange(r, 24, 36) || inRange(r, 72, 84))) /* A4 */ {
                 // strat here
             }
 
