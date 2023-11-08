@@ -4,9 +4,12 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.troubleshoot.Logs;
 import org.firstinspires.ftc.vision.VisionPortal;
@@ -14,7 +17,7 @@ import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
 
-@Autonomous(name="AutoFF", group="Furious Frog")
+@Autonomous(name="AutoFF", group="Furious Frogs")
 @Disabled
 public class OpModeAuto extends LinearOpMode
 {
@@ -29,6 +32,14 @@ public class OpModeAuto extends LinearOpMode
         Logs.setTelemetry(telemetry);
 
         MacanumWheels wheels = new MacanumWheels(hardwareMap);
+        DistanceSensor leftDistanceSensor = (DistanceSensor) hardwareMap.get("left2m");
+        DistanceSensor rightDistanceSensor = (DistanceSensor) hardwareMap.get("right2m");
+        DcMotor armMotor = hardwareMap.dcMotor.get("armMotor");
+        Servo clawServo = hardwareMap.servo.get("clawServo");
+        DcMotor armMotor2 = null;
+        if (hardwareMap.dcMotor.contains("armMotor2")) {
+            armMotor2 = hardwareMap.dcMotor.get("armMotor2");
+        }
 
         // Send telemetry message to signify robot waiting;
         Logs.log3("Status", "Ready to run");
@@ -42,7 +53,7 @@ public class OpModeAuto extends LinearOpMode
 
         // Step 1:  Drive forward 20 inch
         // TODO --  Determine quadrant
-        int quadrant = getQuadrant();
+        String quadrant = getQuadrant(leftDistanceSensor, rightDistanceSensor);
         
         // Step 1:  Drive forward 20 inch
         // TODO --  Determine which stripe is the pixel on
@@ -99,9 +110,13 @@ public class OpModeAuto extends LinearOpMode
             telemetry.addData("recognition",
                     String.format("recognition right %s, left %s, top %s,bottom %s ", recognition.getRight(),
                             recognition.getLeft(), recognition.getTop(), recognition.getBottom()));
+            telemetry.update();
+            sleep(1000);
             visionPortal.stopStreaming();
         } else {
             telemetry.addData("no recognition", currentRecognitions.size());
+            sleep(1000);
+            telemetry.update();
             //move robot to backstage
         }
 
@@ -110,8 +125,25 @@ public class OpModeAuto extends LinearOpMode
         return 0;
     }
 
-    private int getQuadrant() {
-        return 1;
+    private String getQuadrant(DistanceSensor leftDistanceSensor, DistanceSensor rightDistanceSensor) {
+        double l = leftDistanceSensor.getDistance(DistanceUnit.INCH);
+        double r = rightDistanceSensor.getDistance(DistanceUnit.INCH);
+        String quadrant = "";
+        if ((inRange(l, 48, 60) && (inRange(r, 24, 36) || inRange(r, 72, 84)))) /* A4 */ {
+            quadrant = "A2";
+        } else if ((inRange(l, 24, 36) || inRange(l, 72, 84)) && inRange(r, 48, 60)) /* F4 */ {
+            quadrant = "F2";
+        } else if (inRange(l, 24, 36) && (inRange(r, 24, 36) || inRange(r, 96, 108))) /* F2 */ {
+            quadrant = "A4";
+        } else if ((inRange(l, 24, 36) || inRange(l, 96, 108)) && inRange(r, 24, 36)) /* A2 */ {
+            quadrant = "F4";
+        }
+        telemetry.addData("Detected Quadrant", quadrant);
+        return quadrant;
+    }
+
+    public boolean inRange(double distance, int start, int end){
+        return distance > start && distance < end;
     }
 
 }

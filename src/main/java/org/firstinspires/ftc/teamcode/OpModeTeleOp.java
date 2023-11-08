@@ -28,6 +28,8 @@
  */
 package org.firstinspires.ftc.teamcode;
 
+import android.util.Log;
+
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -40,7 +42,7 @@ import org.firstinspires.ftc.teamcode.troubleshoot.Logs;
 
 import java.util.List;
 
-@TeleOp(name = "TeleopFF", group = "Furious Frog")
+@TeleOp(name = "TeleopFF", group = "Furious Frogs")
 //@Disabled
 public class OpModeTeleOp extends LinearOpMode {
     @Override
@@ -53,21 +55,26 @@ public class OpModeTeleOp extends LinearOpMode {
 
         allDeviceMappings.forEach(d -> {
             telemetry.addData("Detected Device", d.getDeviceTypeClass().getCanonicalName());
+            d.entrySet().stream().forEach(e -> telemetry.addData("device name", e.getKey()));
         });
+        telemetry.update();
+        //sleep(5000);
 
         DcMotor armMotor = hardwareMap.dcMotor.get("armMotor");
         MacanumWheels wheels = new MacanumWheels(hardwareMap);
         Servo clawServo = hardwareMap.servo.get("clawServo");
-        Servo armServo = hardwareMap.servo.get("armServo");
+//        Servo armServo = hardwareMap.servo.get("armServo");
         DcMotor armMotor2 = null;
         if (hardwareMap.dcMotor.contains("armMotor2")) {
             armMotor2 = hardwareMap.dcMotor.get("armMotor2");
         }
+
         waitForStart();
 
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
+
             double chassisY = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
             System.out.println("gamepad1.left_stick_y is " + chassisY);
             double chassisX = gamepad1.left_stick_x * 1.1; // Counteract imperfect strafing
@@ -83,7 +90,7 @@ public class OpModeTeleOp extends LinearOpMode {
             boolean dpadRight = gamepad2.dpad_right;
 
             telemetry.addData("dpad ", String.format("dpadUp : %s, dpadDown : %s, dpadLeft : %s, dpadRight : %s", dpadUp, dpadDown, dpadLeft, dpadRight));
-            telemetry.addData("Servo position before", String.format("claw %s arm %s", clawServo.getPosition(), armServo.getPosition()));
+            //telemetry.addData("Servo position before", String.format("claw %s arm %s", clawServo.getPosition(), armServo.getPosition()));
 
             System.out.println("dpadUp is " + dpadUp);
             System.out.println("dpadDown is " + dpadDown);
@@ -96,14 +103,14 @@ public class OpModeTeleOp extends LinearOpMode {
             } else if (dpadDown) {
                 clawServo.setPosition(1/2);
             }
+//
+//            if (dpadRight) {
+//                armServo.setPosition(1/2);
+//            } else if (dpadLeft) {
+//                armServo.setPosition(1/2);
+//            }
 
-            if (dpadRight) {
-                armServo.setPosition(1/2);
-            } else if (dpadLeft) {
-                armServo.setPosition(1/2);
-            }
-
-            telemetry.addData("Servo position after", String.format("claw %s arm %s", clawServo.getPosition(), armServo.getPosition()));
+            //telemetry.addData("Servo position after", String.format("claw %s arm %s", clawServo.getPosition(), armServo.getPosition()));
 
             double armY = gamepad2.left_stick_y;
             double powerArmY = armY * 1;

@@ -20,7 +20,7 @@ public class Logs {
         telemetry.log().add(str);
     }
 
-    public static void log3(String group, String str){
+    public static void log3(String group, Object str){
         RobotLog.d(prefix + str);
         telemetry.addData(group, str);
         telemetry.update();
