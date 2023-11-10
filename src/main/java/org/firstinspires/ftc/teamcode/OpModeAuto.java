@@ -32,7 +32,7 @@ public class OpModeAuto extends LinearOpMode
 
         // Step 1:  Drive forward
         // TODO --  Determine how long we will need to go, in terms of distance and/or time -- Ani1 and Vishnu
-        wheels.goForward();
+        wheels.goForward(10.0);
 
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 1.0)) {
