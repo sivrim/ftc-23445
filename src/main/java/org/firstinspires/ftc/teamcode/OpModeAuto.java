@@ -42,6 +42,39 @@ public class OpModeAuto extends LinearOpMode
 
         // Step 2:  Turn and keep on looking for April tags
         //TODO
+        frontLeftMotor.setPower = (0,1,0);
+  frontRightMotor.setPower = (0,1,0);
+  backLeftMotor.setPower = (0,1,0);
+  backRightMotor.setPower = (0,1,0);
+
+  frontLeftMotor.setPower = (0,0,-1.0);
+  frontRightMotor.setPower = (0,0,1.0);
+  backLeftMotor.setPower = (0,0,-1.0);
+  backRightMotor.setPower = (0,0,1.0);
+
+  public double getDESIRED_DISTANCE() {
+    return DESIRED_DISTANCE;
+  }
+
+  //Detecting if april tag 1 is detected and desired distance is 45 inches(Blue side)
+    if (final double DESIRED_DISTANCE = 45.0;)&&(aprilTag(1) DETECTED);{
+//everything we need to do in autonomous
+  }
+
+  //Detecting if april tag 7 is detected and desired distance is 33 inches(Red Side)
+    if (final double DESIRED_DISTANCE = 33.0;)&&(aprilTag(7) DETECTED);{
+      //everything we need to do in autonomous
+  }
+
+  //Detecting if april tag 1 is detected and desired distance is 45 inches(Blue Side)
+    if (final double DESIRED_DISTANCE = 94.0;)&&(aprilTag(1) DETECTED);{
+//everything we need to do in autonomous
+  }
+
+  //Detecting if april tag 7 is detected and desired distance is 73 inches(Red Side)
+    if (final double DESIRED_DISTANCE = 73.0;)&&(aprilTag(7) DETECTED);{
+//everything we need to do in autonomous
+  }
         runtime.reset();
         while (opModeIsActive() /* && Apritags not detected */) {
             telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
