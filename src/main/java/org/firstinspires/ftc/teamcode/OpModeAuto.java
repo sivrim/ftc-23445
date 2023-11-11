@@ -76,6 +76,7 @@ public class OpModeAuto extends LinearOpMode
 
         // Step 3: Rotate back to original orientation
         //TODO
+        wheels.rotate(55.0);
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 1.3)) {
             telemetry.addData("Path", "Leg 2: %4.1f S Elapsed", runtime.seconds());
@@ -85,6 +86,8 @@ public class OpModeAuto extends LinearOpMode
         // Step 4: Move ahead remaining distance
         //TODO
         wheels.goForward(21.0);
+        wheels.rotate(-90.0);
+        wheels.goForward(72.0);
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 1.0)) {
             telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
