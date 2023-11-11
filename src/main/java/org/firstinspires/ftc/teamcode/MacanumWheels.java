@@ -42,35 +42,30 @@ public class MacanumWheels {
         move(0,0,0);
     }
 
-    public void goForward(){
-        //TODO put the right values  -- Vishnu and Ani1
-        move(1,1,1);
-    }
-
     public void goForward(int targetTicks){
-        //TODO put the right values  -- Vishnu and Ani1
-        move(1,1,1, targetTicks);
+        move(0,1,0, targetTicks);
     }
 
     public void back(int targetTicks){
-        //TODO put the right values  -- Vishnu and Ani1
-        move(1,1,1, targetTicks);
+        move(0,-1,0, targetTicks);
     }
 
-    public void back(){
-        //TODO put the right values  -- Vishnu and Ani1
-        move(1,1,1);
+    public void rotateLeft90(int targetTicks){
+        move(0,0,-1, targetTicks);
+    }
+
+    public void rightRight90(int targetTicks){
+        move(0,0,1, targetTicks);
     }
 
 
-    public void left90(){
-        move(1,1,1);
-        //TODO Stop once we have moved 90 degrees-- Adi
+    public void strafeLeft(int targetTicks){
+        move(-1,0,0, targetTicks);
     }
 
-    public void right90(){
-        move(1,1,1);
-        //TODO Stop once we have moved 90 degrees-- Adi
+
+    public void strafeRight(int targetTicks){
+        move(1,0,0, targetTicks);
     }
 
     /**
@@ -90,10 +85,7 @@ public class MacanumWheels {
         double backRightPower = (y + x - turn) / denominator;
 
         double powerRatio = 0.7;
-        frontLeftMotor.setPower(powerRatio * frontLeftPower);
-        backLeftMotor.setPower(powerRatio * backLeftPower);
-        frontRightMotor.setPower(powerRatio * frontRightPower);
-        backRightMotor.setPower(powerRatio * backRightPower);
+        setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower, powerRatio);
     }
 
     public void setMode(DcMotor.RunMode mode){
@@ -106,12 +98,13 @@ public class MacanumWheels {
     /**
      * TODO move till desired movement is achieved
      */
-    public void move(double x, double y, double turn, int targetTicks){
+    public void move(double x, double y, double turn, int targetTicks) {
 
         setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(turn), 1);
+
         double frontLeftPower = (y + x + turn) / denominator;
         double backLeftPower = (y - x + turn) / denominator;
         double frontRightPower = (y - x - turn) / denominator;
@@ -121,21 +114,28 @@ public class MacanumWheels {
 
         telemetry.addData("power ", String.format("%s %s %s %s", frontLeftPower, backLeftPower, frontRightPower, backRightPower));
         telemetry.update();
+
         sleep(1000);
 
+        setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower, powerRatio);
+
+        setTargetPosition(targetTicks, frontLeftPower, backLeftPower, frontRightPower, backRightPower);
+
+        setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    private void setTargetPosition(int targetTicks, double frontLeftPower, double backLeftPower, double frontRightPower, double backRightPower) {
+        frontLeftMotor.setTargetPosition((int) (frontLeftPower * targetTicks));
+        backLeftMotor.setTargetPosition((int) (backLeftPower * targetTicks));
+        frontRightMotor.setTargetPosition((int) (frontRightPower * targetTicks));
+        backRightMotor.setTargetPosition((int) (backRightPower * targetTicks));
+    }
+
+    private void setPower(double frontLeftPower, double backLeftPower, double frontRightPower, double backRightPower, double powerRatio) {
         frontLeftMotor.setPower(powerRatio * frontLeftPower);
         backLeftMotor.setPower(powerRatio * backLeftPower);
         frontRightMotor.setPower(powerRatio * frontRightPower);
         backRightMotor.setPower(powerRatio * backRightPower);
-
-        frontLeftMotor.setTargetPosition((int) targetTicks);
-        backLeftMotor.setTargetPosition((int) targetTicks);
-        frontRightMotor.setTargetPosition((int) targetTicks);
-        backRightMotor.setTargetPosition((int) targetTicks);
-
-        setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
     }
 
     public final void sleep(long milliseconds) {
