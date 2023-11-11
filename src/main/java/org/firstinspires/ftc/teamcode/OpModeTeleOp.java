@@ -61,7 +61,7 @@ public class OpModeTeleOp extends LinearOpMode {
         //sleep(5000);
 
         DcMotor armMotor = hardwareMap.dcMotor.get("armMotor");
-        MacanumWheels wheels = new MacanumWheels(hardwareMap);
+        MacanumWheels wheels = new MacanumWheels(hardwareMap, telemetry);
         Servo clawServo = hardwareMap.servo.get("clawServo");
 //        Servo armServo = hardwareMap.servo.get("armServo");
         DcMotor armMotor2 = null;

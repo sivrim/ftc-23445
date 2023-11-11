@@ -18,7 +18,7 @@ import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 import java.util.List;
 
 @Autonomous(name="AutoFF", group="Furious Frogs")
-@Disabled
+//@Disabled
 public class OpModeAuto extends LinearOpMode
 {
 
@@ -31,9 +31,9 @@ public class OpModeAuto extends LinearOpMode
 
         Logs.setTelemetry(telemetry);
 
-        MacanumWheels wheels = new MacanumWheels(hardwareMap);
-        DistanceSensor leftDistanceSensor = (DistanceSensor) hardwareMap.get("left2m");
-        DistanceSensor rightDistanceSensor = (DistanceSensor) hardwareMap.get("right2m");
+        MacanumWheels wheels = new MacanumWheels(hardwareMap, telemetry);
+//        DistanceSensor leftDistanceSensor = (DistanceSensor) hardwareMap.get("left2m");
+//        DistanceSensor rightDistanceSensor = (DistanceSensor) hardwareMap.get("right2m");
         DcMotor armMotor = hardwareMap.dcMotor.get("armMotor");
         Servo clawServo = hardwareMap.servo.get("clawServo");
         DcMotor armMotor2 = null;
@@ -42,37 +42,51 @@ public class OpModeAuto extends LinearOpMode
         }
 
         // Send telemetry message to signify robot waiting;
-        Logs.log3("Status", "Ready to run");
+        telemetry.addData("Status", "Ready to run");
+        telemetry.update();
+
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        Logs.log3("Status", "Started");
-
+        telemetry.addData("Status", "Started");
+        telemetry.update();
+        //sleep(1000);
         //Step 0.5 TODO STOP_AND_RESET_ENCODERS
 
+
+        armMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        armMotor2.setPower(.5);
+
+        armMotor2.setTargetPosition(-1000);
+        armMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        clawServo.setPosition(.8);
+
+        sleep(1000);
+
+        clawServo.setPosition(.3);
         // Step 1:  Drive forward 20 inch
         // TODO --  Determine quadrant
-        String quadrant = getQuadrant(leftDistanceSensor, rightDistanceSensor);
-        
-        // Step 1:  Drive forward 20 inch
-        // TODO --  Determine which stripe is the pixel on
-        int stripe = getStripe();
+        //String quadrant = getQuadrant(leftDistanceSensor, rightDistanceSensor);
 
-        // TODO --  Go to stripe, place pixel and revert back out of stripe boundary
-        if(stripe == 1) {
-
-        } else if(stripe == 2) {
-
-        }else if(stripe == 3) {
-
-        }
+        stripeDetection();
 
         runtime.reset();
+
+        telemetry.addData("moving robot", "moving");
+        telemetry.update();
+       // wheels.goForward(10);
+
+        //sleep(4000);
+
+        telemetry.addData("moved robot", "moved");
+        telemetry.update();
 
         //TODO Go to back board
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 10.0)) {
+        while (opModeIsActive() && (runtime.seconds() < 2.0)) {
 
         }
 
@@ -87,6 +101,21 @@ public class OpModeAuto extends LinearOpMode
         telemetry.addData("Path", "Complete");
         telemetry.update();
         sleep(1000);
+    }
+
+    private void stripeDetection() {
+        // Step 1:  Drive forward 20 inch
+        // TODO --  Determine which stripe is the pixel on
+        int stripe = getStripe();
+
+        // TODO --  Go to stripe, place pixel and revert back out of stripe boundary
+        if(stripe == 1) {
+
+        } else if(stripe == 2) {
+
+        }else if(stripe == 3) {
+
+        }
     }
 
     /**
@@ -111,7 +140,7 @@ public class OpModeAuto extends LinearOpMode
                     String.format("recognition right %s, left %s, top %s,bottom %s ", recognition.getRight(),
                             recognition.getLeft(), recognition.getTop(), recognition.getBottom()));
             telemetry.update();
-            sleep(1000);
+            sleep(4000);
             visionPortal.stopStreaming();
         } else {
             telemetry.addData("no recognition", currentRecognitions.size());
@@ -126,8 +155,18 @@ public class OpModeAuto extends LinearOpMode
     }
 
     private String getQuadrant(DistanceSensor leftDistanceSensor, DistanceSensor rightDistanceSensor) {
+
+        telemetry.addData("Detecting Quadrant", "start");
+        telemetry.update();
+
         double l = leftDistanceSensor.getDistance(DistanceUnit.INCH);
         double r = rightDistanceSensor.getDistance(DistanceUnit.INCH);
+
+        telemetry.addData("l", l);
+        telemetry.addData("r", r);
+
+        telemetry.update();
+        sleep(10000);
         String quadrant = "";
         if ((inRange(l, 48, 60) && (inRange(r, 24, 36) || inRange(r, 72, 84)))) /* A4 */ {
             quadrant = "A2";
@@ -139,6 +178,8 @@ public class OpModeAuto extends LinearOpMode
             quadrant = "F4";
         }
         telemetry.addData("Detected Quadrant", quadrant);
+        telemetry.update();
+        sleep(100000);
         return quadrant;
     }
 

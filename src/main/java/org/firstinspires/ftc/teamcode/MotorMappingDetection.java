@@ -18,7 +18,7 @@ public class MotorMappingDetection extends LinearOpMode {
     @Override
     public void runOpMode() {
 
-        MacanumWheels wheels = new MacanumWheels(hardwareMap);
+        MacanumWheels wheels = new MacanumWheels(hardwareMap, telemetry);
         DcMotor armMotor = hardwareMap.dcMotor.get("armMotor");
 
         // Send telemetry message to signify robot waiting;
