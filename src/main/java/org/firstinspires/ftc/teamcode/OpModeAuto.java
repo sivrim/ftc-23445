@@ -84,6 +84,7 @@ public class OpModeAuto extends LinearOpMode
 
         // Step 4: Move ahead remaining distance
         //TODO
+        wheels.goForward(21.0);
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 1.0)) {
             telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
