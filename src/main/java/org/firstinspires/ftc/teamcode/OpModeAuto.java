@@ -32,8 +32,8 @@ public class OpModeAuto extends LinearOpMode
         Logs.setTelemetry(telemetry);
 
         MacanumWheels wheels = new MacanumWheels(hardwareMap, telemetry);
-//        DistanceSensor leftDistanceSensor = (DistanceSensor) hardwareMap.get("left2m");
-//        DistanceSensor rightDistanceSensor = (DistanceSensor) hardwareMap.get("right2m");
+// DistanceSensor leftDistanceSensor = (DistanceSensor) hardwareMap.get("left2m");
+// DistanceSensor rightDistanceSensor = (DistanceSensor) hardwareMap.get("right2m");
         DcMotor armMotor = hardwareMap.dcMotor.get("armMotor");
         Servo clawServo = hardwareMap.servo.get("clawServo");
         DcMotor armMotor2 = null;
@@ -77,23 +77,34 @@ public class OpModeAuto extends LinearOpMode
 
         telemetry.addData("moving robot", "moving");
         telemetry.update();
-       // wheels.goForward(10);
+        wheels.goForward(100);
 
         //sleep(4000);
 
         telemetry.addData("moved robot", "moved");
         telemetry.update();
 
+        //TODO Place purple pixel on the spike mark
+        armMotor2.setTargetPosition(-1000);
+        clawServo.setPosition(0.8);
+        armMotor2.setTargetPosition(5);
+        clawServo.setPosition(0.3);
+        wheels.back(100);
+
         //TODO Go to back board
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 2.0)) {
-
+            wheels.rotateLeft90(100);
+            wheels.goForward(100);
+            wheels.stop();
         }
 
         //TODO Drop yellow pixel
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 10.0)) {
-
+            armMotor.setTargetPosition(100);
+            armMotor2.setTargetPosition(-50);
+            clawServo.setPosition(0.8);
         }
 
         //TODO park
@@ -109,11 +120,15 @@ public class OpModeAuto extends LinearOpMode
         int stripe = getStripe();
 
         // TODO --  Go to stripe, place pixel and revert back out of stripe boundary
-        if(stripe == 1) {
+        if (stripe == 1) {
 
-        } else if(stripe == 2) {
+        }
 
-        }else if(stripe == 3) {
+        else if (stripe == 2) {
+
+        }
+
+        else if (stripe == 3) {
 
         }
     }
@@ -132,7 +147,7 @@ public class OpModeAuto extends LinearOpMode
 
         List<Recognition> currentRecognitions = tfod.getRecognitions();
 
-        if(currentRecognitions.size() == 1){
+        if (currentRecognitions.size() == 1) {
             //find location, move robot and place purple pixel
 
             Recognition recognition = currentRecognitions.get(0);
@@ -142,7 +157,9 @@ public class OpModeAuto extends LinearOpMode
             telemetry.update();
             sleep(4000);
             visionPortal.stopStreaming();
-        } else {
+        }
+
+        else {
             telemetry.addData("no recognition", currentRecognitions.size());
             sleep(1000);
             telemetry.update();
@@ -168,7 +185,7 @@ public class OpModeAuto extends LinearOpMode
         telemetry.update();
         sleep(10000);
         String quadrant = "";
-        if ((inRange(l, 48, 60) && (inRange(r, 24, 36) || inRange(r, 72, 84)))) /* A4 */ {
+        if (inRange(l, 48, 60) && (inRange(r, 24, 36) || inRange(r, 72, 84))) /* A4 */ {
             quadrant = "A2";
         } else if ((inRange(l, 24, 36) || inRange(l, 72, 84)) && inRange(r, 48, 60)) /* F4 */ {
             quadrant = "F2";
