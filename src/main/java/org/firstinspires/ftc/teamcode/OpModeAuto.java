@@ -88,6 +88,10 @@ public class OpModeAuto extends LinearOpMode
         wheels.goForward(21.0);
         wheels.rotate(-90.0);
         wheels.goForward(72.0);
+        wheels.rotate(-90.0);
+        wheels.goForward(31.0);
+        Wheels.rotate(90.0);
+        Wheels.goForward(10.0):
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < 1.0)) {
             telemetry.addData("Path", "Leg 3: %4.1f S Elapsed", runtime.seconds());
