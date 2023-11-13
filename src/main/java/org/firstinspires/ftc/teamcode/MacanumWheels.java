@@ -47,20 +47,20 @@ public class MacanumWheels {
     }
 
     public void back(int targetTicks){
-        move(0,-1,0, targetTicks);
+        move(0,1,0, targetTicks);
     }
 
     public void rotateLeft90(int targetTicks){
-        move(0,0,-1, targetTicks);
+        move(0,1,0, targetTicks);
     }
 
     public void rightRight90(int targetTicks){
-        move(0,0,1, targetTicks);
+        move(0,1,0, targetTicks);
     }
 
 
     public void strafeLeft(int targetTicks){
-        move(-1,0,0, targetTicks);
+        move(0,1,0, targetTicks);
     }
 
 
@@ -84,7 +84,7 @@ public class MacanumWheels {
         double frontRightPower = (y - x - turn) / denominator;
         double backRightPower = (y + x - turn) / denominator;
 
-        double powerRatio = 0.7;
+        double powerRatio = 0.2;
         setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower, powerRatio);
     }
 
@@ -110,12 +110,12 @@ public class MacanumWheels {
         double frontRightPower = (y - x - turn) / denominator;
         double backRightPower = (y + x - turn) / denominator;
 
-        double powerRatio = .2;
+        double powerRatio = 0.2;
 
         telemetry.addData("power ", String.format("%s %s %s %s", frontLeftPower, backLeftPower, frontRightPower, backRightPower));
         telemetry.update();
 
-        sleep(1000);
+        sleep(4000);
 
         setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower, powerRatio);
 
@@ -123,25 +123,38 @@ public class MacanumWheels {
 
         setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
+        setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower, 0);
+
         while (isAnyMotorBusy()){
             sleep(10);
         }
+        setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower, 0);
+
     }
 
-    private void setTargetPosition(int targetTicks, double frontLeftPower, double backLeftPower, double frontRightPower, double backRightPower) {
-        frontLeftMotor.setTargetPosition((int) (frontLeftPower * targetTicks));
-        backLeftMotor.setTargetPosition((int) (backLeftPower * targetTicks));
-        frontRightMotor.setTargetPosition((int) (frontRightPower * targetTicks));
-        backRightMotor.setTargetPosition((int) (backRightPower * targetTicks));
+    public void setTargetPosition(int targetTicks, double frontLeftPower, double backLeftPower, double frontRightPower, double backRightPower) {
+
+        telemetry.addData("target position ", (int) (frontLeftPower * targetTicks));
+        telemetry.update();
+        sleep(5000);
+
+        frontLeftMotor.setTargetPosition(frontLeftMotor.getCurrentPosition() + (int) (frontLeftPower * targetTicks));
+        backLeftMotor.setTargetPosition(backLeftMotor.getCurrentPosition() +(int) (backLeftPower * targetTicks));
+        frontRightMotor.setTargetPosition(frontRightMotor.getCurrentPosition() +(int) (frontRightPower * targetTicks));
+        backRightMotor.setTargetPosition(backRightMotor.getCurrentPosition() +(int) (backRightPower * targetTicks));
     }
 
-    private boolean isAnyMotorBusy() {
+    public boolean isAnyMotorBusy() {
         return frontLeftMotor.isBusy() || backLeftMotor.isBusy() || frontRightMotor.isBusy() || backRightMotor.isBusy();
     }
 
 
 
-    private void setPower(double frontLeftPower, double backLeftPower, double frontRightPower, double backRightPower, double powerRatio) {
+    public void setPower(double frontLeftPower, double backLeftPower, double frontRightPower, double backRightPower, double powerRatio) {
+        telemetry.addData("power ", powerRatio * frontLeftPower);
+        telemetry.update();
+        sleep(5000);
+
         frontLeftMotor.setPower(powerRatio * frontLeftPower);
         backLeftMotor.setPower(powerRatio * backLeftPower);
         frontRightMotor.setPower(powerRatio * frontRightPower);
