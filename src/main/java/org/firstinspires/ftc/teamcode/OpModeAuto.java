@@ -233,8 +233,8 @@ public class OpModeAuto extends LinearOpMode
             telemetry.addData("Running to",  " %7d", newTarget);
             telemetry.addData("Currently at",  " at %7d ", motor.getCurrentPosition());
             telemetry.update();
+            sleep(1);
         }
     }
-
 
 }
