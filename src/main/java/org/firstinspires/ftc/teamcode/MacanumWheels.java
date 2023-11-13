@@ -122,6 +122,10 @@ public class MacanumWheels {
         setTargetPosition(targetTicks, frontLeftPower, backLeftPower, frontRightPower, backRightPower);
 
         setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        while (isAnyMotorBusy()){
+            sleep(10);
+        }
     }
 
     private void setTargetPosition(int targetTicks, double frontLeftPower, double backLeftPower, double frontRightPower, double backRightPower) {
@@ -130,6 +134,12 @@ public class MacanumWheels {
         frontRightMotor.setTargetPosition((int) (frontRightPower * targetTicks));
         backRightMotor.setTargetPosition((int) (backRightPower * targetTicks));
     }
+
+    private boolean isAnyMotorBusy() {
+        return frontLeftMotor.isBusy() || backLeftMotor.isBusy() || frontRightMotor.isBusy() || backRightMotor.isBusy();
+    }
+
+
 
     private void setPower(double frontLeftPower, double backLeftPower, double frontRightPower, double backRightPower, double powerRatio) {
         frontLeftMotor.setPower(powerRatio * frontLeftPower);
