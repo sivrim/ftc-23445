@@ -69,9 +69,10 @@ public class OpModeAuto extends LinearOpMode {
 //            }
 
             //move robot to stripe. TODO this is dynamic. Fill above if-else clauses instead
-            wheels.goForward(50);
+            wheels.goForward(1000);
+
             wheels.setPower(0,0,0,0,0);
-            sleep(100000);
+
 //            //TODO Place purple pixel on the spike mark
 //            placePurplePixel();
 //
