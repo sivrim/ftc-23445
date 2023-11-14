@@ -35,9 +35,6 @@ public class OpModeAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-
-        Logs.setTelemetry(telemetry);
-
         try {
             initTfod();
 
@@ -46,16 +43,7 @@ public class OpModeAuto extends LinearOpMode {
             clawServo = hardwareMap.servo.get("clawServo");
             armMotor2 = hardwareMap.dcMotor.get("armMotor2");
 
-            telemetry.addData("Status", "Ready to run");
-            telemetry.update();
-
-            // Wait for the game to start (driver presses PLAY)
-            waitForStart();
-
-            telemetry.addData("Status", "Started");
-            telemetry.update();
-            sleep(1000);
-
+            onStart();
 
 //            int stripe = getStripe();
 //
@@ -69,7 +57,7 @@ public class OpModeAuto extends LinearOpMode {
 //            }
 
             //move robot to stripe. TODO this is dynamic. Fill above if-else clauses instead
-            wheels.goForward(1000);
+            wheels.goForward(10000);
 
             wheels.setPower(0,0,0,0,0);
 
@@ -102,11 +90,9 @@ public class OpModeAuto extends LinearOpMode {
 
 //        clawServo.setPosition(.8);
 
-            sleep(1000);
-
             telemetry.addData("Path", "Complete");
             telemetry.update();
-            sleep(1000);
+            sleep(10000);
         } catch (Exception ex) {
             ex.printStackTrace();
 
@@ -116,6 +102,18 @@ public class OpModeAuto extends LinearOpMode {
             }
         }
 
+    }
+
+    private void onStart() {
+        telemetry.addData("Status", "Ready to run");
+        telemetry.update();
+
+        // Wait for the game to start (driver presses PLAY)
+        waitForStart();
+
+        telemetry.addData("Status", "Started");
+        telemetry.update();
+        sleep(1000);
     }
 
     private void dropYellowPixel() {
@@ -218,38 +216,6 @@ public class OpModeAuto extends LinearOpMode {
         telemetry.update();
         sleep(1000);
 
-    }
-
-    private String getQuadrant() {
-
-        DistanceSensor leftDistanceSensor = (DistanceSensor) hardwareMap.get("left2m");
-        DistanceSensor rightDistanceSensor = (DistanceSensor) hardwareMap.get("right2m");
-
-        telemetry.addData("Detecting Quadrant", "start");
-        telemetry.update();
-
-        double l = leftDistanceSensor.getDistance(DistanceUnit.INCH);
-        double r = rightDistanceSensor.getDistance(DistanceUnit.INCH);
-
-        telemetry.addData("l", l);
-        telemetry.addData("r", r);
-
-        telemetry.update();
-        sleep(1000);
-        String quadrant = "";
-        if ((inRange(l, 48, 60) && (inRange(r, 24, 36) || inRange(r, 72, 84)))) /* A4 */ {
-            quadrant = "A2";
-        } else if ((inRange(l, 24, 36) || inRange(l, 72, 84)) && inRange(r, 48, 60)) /* F4 */ {
-            quadrant = "F2";
-        } else if (inRange(l, 24, 36) && (inRange(r, 24, 36) || inRange(r, 96, 108))) /* F2 */ {
-            quadrant = "A4";
-        } else if ((inRange(l, 24, 36) || inRange(l, 96, 108)) && inRange(r, 24, 36)) /* A2 */ {
-            quadrant = "F4";
-        }
-        telemetry.addData("Detected Quadrant", quadrant);
-        telemetry.update();
-        sleep(100000);
-        return quadrant;
     }
 
     public void moveMotor(DcMotor motor, double speed, int targetTicks) {

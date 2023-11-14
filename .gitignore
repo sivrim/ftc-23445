@@ -6,6 +6,9 @@
 # files for the dex VM
 *.dex
 
+
+**/roadrunner/
+
 # Java class files
 *.class
 
