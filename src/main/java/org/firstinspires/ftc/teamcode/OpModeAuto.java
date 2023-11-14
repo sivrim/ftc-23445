@@ -19,8 +19,7 @@ import java.util.List;
 
 @Autonomous(name="AutoFF", group="Furious Frogs")
 //@Disabled
-public class OpModeAuto extends LinearOpMode
-{
+public class OpModeAuto extends LinearOpMode {
 
     /* Declare OpMode members. */
     DcMotor armMotor = null;
@@ -90,24 +89,26 @@ public class OpModeAuto extends LinearOpMode
         armMotor2.setTargetPosition(5);
         clawServo.setPosition(0.3);
         wheels.back(100);
+        telemetry.addData("Purple Pixel", "Placed");
+        telemetry.update();
 
         //TODO Go to back board
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 2.0)) {
-            wheels.rotateLeft90(100);
-            wheels.goForward(100);
-            wheels.stop();
-        }
+        wheels.rotateLeft90(100);
+        wheels.goForward(100);
 
         //TODO Drop yellow pixel
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 10.0)) {
-            armMotor.setTargetPosition(100);
-            armMotor2.setTargetPosition(-50);
-            clawServo.setPosition(0.8);
-        }
+        armMotor.setTargetPosition(100);
+        armMotor2.setTargetPosition(-50);
+        clawServo.setPosition(0.8);
+        wheels.back(20);
+        telemetry.addData("Yellow Pixel", "Dropped");
+        telemetry.update();
 
-        //TODO park
+
+        //TODO move out of the way and park
+        wheels.strafeLeft(50);
+        wheels.goForward(10);
+        wheels.stop();
 
         telemetry.addData("Path", "Complete");
         telemetry.update();
