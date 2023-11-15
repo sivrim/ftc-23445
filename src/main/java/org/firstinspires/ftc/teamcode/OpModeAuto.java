@@ -21,7 +21,7 @@ import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 import java.util.List;
 
 @Autonomous(name = "AutoFF", group = "Furious Frogs")
-//@Disabled
+@Disabled
 public class OpModeAuto extends LinearOpMode {
 
     /* Declare OpMode members. */
