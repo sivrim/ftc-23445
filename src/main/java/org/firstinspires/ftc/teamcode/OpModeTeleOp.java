@@ -28,17 +28,12 @@
  */
 package org.firstinspires.ftc.teamcode;
 
-import android.util.Log;
-
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-
-import org.firstinspires.ftc.teamcode.troubleshoot.Logs;
 
 import java.util.List;
 
@@ -49,7 +44,6 @@ public class OpModeTeleOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         // Make sure your ID's match your configuration
 
-        Logs.setTelemetry(telemetry);
 
         List<HardwareMap.DeviceMapping<? extends HardwareDevice>> allDeviceMappings = hardwareMap.allDeviceMappings;
 
