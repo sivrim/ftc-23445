@@ -132,4 +132,4 @@ Note: Some names start with "Team" and others start with "team".  This is intent
 
 
 
-Videos for training the model to identified the team-prop can be found here -- https://drive.google.com/drive/folders/1SceA366bkkST-cYEVSWtUqfX5bsIYKO-?usp=drive_link
+Videos for training the model to identified the team-prop can be found here -- [https://drive.google.com/drive/folders/1SceA366bkkST-cYEVSWtUqfX5bsIYKO-?usp=drive_link](https://drive.google.com/drive/folders/1SceA366bkkST-cYEVSWtUqfX5bsIYKO-?usp=drive_link)https://drive.google.com/drive/folders/1SceA366bkkST-cYEVSWtUqfX5bsIYKO-?usp=drive_link
