@@ -40,15 +40,24 @@ public class TimeBasedAutoA2 extends LinearOpMode {
 
             log("motion", "trying straight movement", 2000);
             runtime.reset();
-            while (opModeIsActive() && runtime.seconds() < 2.9) {
+            while (opModeIsActive() && runtime.seconds() < 2.7) {
                 move(0, 1, 0);
             }
             stopChassis();
             log("motion", "straight done. try strafe right", 2000);
 
+            log("motion", "trying rotation", 2000);
             runtime.reset();
-            while (opModeIsActive() && (runtime.seconds() < 8.0)) {
-                move(-1, 0, 0);
+            while (opModeIsActive() && runtime.seconds() < 1.32) {
+                move(0, 0, 1);
+            }
+            stopChassis();
+            log("motion", "straight done. try strafe right", 2000);
+
+
+            runtime.reset();
+            while (opModeIsActive() && (runtime.seconds() < 4.5)) {
+                move(0, 1, 0);
             }
             stopChassis();
             runtime.reset();
