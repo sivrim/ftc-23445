@@ -62,21 +62,7 @@ public class TimeBasedAutoA2 extends LinearOpMode {
             stopChassis();
             runtime.reset();
 
-            log("arm current position", armMotor2.getCurrentPosition(), 1000);
-
-            armMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            armMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            armMotor2.setPower(.6);
-            armMotor2.setTargetPosition(1000);
-            armMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            runtime.reset();
-            while (runtime.seconds() < 2.0 && armMotor2.isBusy()){
-                idle();
-            }
-
-            log("claw position position", clawServo.getPosition(), 2000);
-
-            clawServo.setPosition(0.8);
+            //backStageOps();
 
             log("arm current position", armMotor2.getCurrentPosition(), 2000);
 
@@ -113,6 +99,24 @@ public class TimeBasedAutoA2 extends LinearOpMode {
             }
         }
 
+    }
+
+    private void backStageOps() {
+        log("arm current position", armMotor2.getCurrentPosition(), 1000);
+
+        armMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        armMotor2.setPower(.6);
+        armMotor2.setTargetPosition(1000);
+        armMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        runtime.reset();
+        while (runtime.seconds() < 2.0 && armMotor2.isBusy()){
+            idle();
+        }
+
+        log("claw position position", clawServo.getPosition(), 2000);
+
+        clawServo.setPosition(0.8);
     }
 
     private void initLocal() {
