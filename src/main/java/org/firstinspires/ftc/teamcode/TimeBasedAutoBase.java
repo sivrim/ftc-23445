@@ -35,7 +35,8 @@ public class TimeBasedAutoBase extends LinearOpMode {
             initLocal();
             onStart();
             goToBackStage();
-            //backStageStuff();
+            backStageStuff();
+            park();
             telemetry.addData("Path", "Complete");
             telemetry.update();
             sleep(2000);
@@ -49,20 +50,37 @@ public class TimeBasedAutoBase extends LinearOpMode {
 
     }
 
+
+    public void park() {
+        log("do nothing", "do nothing", 10);
+    }
     public void goToBackStage() {
         log("do nothing", "do nothing", 10);
     }
 
     private void backStageStuff() {
+
+        log("arm current position", armMotor.getCurrentPosition(), 1000);
+
+        armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        armMotor.setPower(1);
+        armMotor.setTargetPosition(5300);
+        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        runtime.reset();
+        while (runtime.seconds() < 2.0 && armMotor.isBusy()) {
+            idle();
+        }
+
         log("arm current position", armMotor2.getCurrentPosition(), 1000);
 
         armMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         armMotor2.setPower(.6);
-        armMotor2.setTargetPosition(1000);
+        armMotor2.setTargetPosition(1200);
         armMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         runtime.reset();
-        while (runtime.seconds() < 2.0 && armMotor2.isBusy()){
+        while (runtime.seconds() < 2.0 && armMotor2.isBusy()) {
             idle();
         }
 
@@ -143,6 +161,7 @@ public class TimeBasedAutoBase extends LinearOpMode {
         armMotor = hardwareMap.dcMotor.get("armMotor");
         clawServo = hardwareMap.servo.get("clawServo");
         armMotor2 = hardwareMap.dcMotor.get("armMotor2");
+        clawServo.setPosition(0.1);
     }
 
     private void initChassis() {

@@ -141,7 +141,7 @@ public class MacanumWheelsAuton {
 
         setPower(0, 0, 0, 0, 0);
 
-        sleep(10000);
+        sleep(100);
 
     }
 

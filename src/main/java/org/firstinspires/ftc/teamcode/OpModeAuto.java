@@ -88,7 +88,7 @@ public class OpModeAuto extends LinearOpMode {
 
             telemetry.addData("Path", "Complete");
             telemetry.update();
-            sleep(10000);
+            sleep(1000);
         } catch (Exception ex) {
             ex.printStackTrace();
 

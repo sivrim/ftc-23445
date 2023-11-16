@@ -16,33 +16,64 @@ import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 
 import java.util.List;
 
+
 @Autonomous(name = "AutoTimedF4", group = "Furious Frogs")
 //@Disabled
 public class TimeBasedAutoF4 extends TimeBasedAutoBase {
     public void goToBackStage() {
-        log("do nothing", "do nothing", 10000);
+        // move forward till center line
         runtime.reset();
-        while (opModeIsActive() && runtime.seconds() < 0.12) {
+        while (opModeIsActive() && runtime.seconds() < 1.07) {
+            move(0, 1, 0);
+        }
+        stopChassis();
+
+        runtime.reset();
+        while (opModeIsActive() && runtime.seconds() < .22) {
+            move(1, 0, 0);
+        }
+        stopChassis();
+
+        runtime.reset();
+        while (opModeIsActive() && runtime.seconds() < 1.39) {
+            move(0, 0, -1);
+        }
+        stopChassis();
+        runtime.reset();
+
+        while (opModeIsActive() && (runtime.seconds() < 1.74)) {
+            move(0, 1, 0);
+        }
+        stopChassis();
+
+        runtime.reset();
+
+    }
+    public void park() {
+        runtime.reset();
+
+        while (opModeIsActive() && (runtime.seconds() < .7)) {
             move(0, -1, 0);
         }
         stopChassis();
 
+
         runtime.reset();
-        while (opModeIsActive() && runtime.seconds() < 3.5) {
-            move(-1, 0, 0);
+
+        while (opModeIsActive() && (runtime.seconds() < 1.5)) {
+            move(1, 0, 0);
         }
         stopChassis();
 
-        runtime.reset();
-
-        log("motion", "try rotate", 2000);
 
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.3)) {
-            move(0, 0, 1);
+
+        while (opModeIsActive() && (runtime.seconds() < .6)) {
+            move(0, 1, 0);
         }
         stopChassis();
-        runtime.reset();
+
+
     }
 
 }
