@@ -1,17 +1,20 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class MacanumWheels {
-    public DcMotor frontLeftMotor = null;
-    public DcMotor backLeftMotor = null;
-    public DcMotor frontRightMotor = null;
-    public DcMotor backRightMotor = null;
+    public DcMotorEx frontLeftMotor = null;
+    public DcMotorEx backLeftMotor = null;
+    public DcMotorEx frontRightMotor = null;
+    public DcMotorEx backRightMotor = null;
     Telemetry telemetry;
+    private ElapsedTime runtime = new ElapsedTime();
     double powerRatio = 0.7;
 
     static final double     COUNTS_PER_MOTOR_REV    = 1440 ;    // eg: TETRIX Motor Encoder
@@ -24,10 +27,10 @@ public class MacanumWheels {
 
     public MacanumWheels(HardwareMap hardwareMap, Telemetry telemetry) {
         this.telemetry = telemetry;
-        frontLeftMotor = hardwareMap.dcMotor.get(DeviceNames.MOTOR_FRONT_LEFT);
-        backLeftMotor = hardwareMap.dcMotor.get(DeviceNames.MOTOR_BACK_LEFT);
-        frontRightMotor = hardwareMap.dcMotor.get(DeviceNames.MOTOR_FRONT_RIGHT);
-        backRightMotor = hardwareMap.dcMotor.get(DeviceNames.MOTOR_BACK_RIGHT);
+        frontLeftMotor = (DcMotorEx) hardwareMap.dcMotor.get(DeviceNames.MOTOR_FRONT_LEFT);
+        backLeftMotor = (DcMotorEx) hardwareMap.dcMotor.get(DeviceNames.MOTOR_BACK_LEFT);
+        frontRightMotor = (DcMotorEx) hardwareMap.dcMotor.get(DeviceNames.MOTOR_FRONT_RIGHT);
+        backRightMotor = (DcMotorEx) hardwareMap.dcMotor.get(DeviceNames.MOTOR_BACK_RIGHT);
 
         // Reverse the right side motors. This may be wrong for your setup.
         // If your robot moves backwards when commanded to go forwards,
@@ -42,35 +45,30 @@ public class MacanumWheels {
         move(0,0,0);
     }
 
-    public void goForward(){
-        //TODO put the right values  -- Vishnu and Ani1
-        move(1,1,1);
-    }
-
     public void goForward(int targetTicks){
-        //TODO put the right values  -- Vishnu and Ani1
-        move(1,1,1, targetTicks);
+        move(0,1,0, targetTicks);
     }
 
     public void back(int targetTicks){
-        //TODO put the right values  -- Vishnu and Ani1
-        move(1,1,1, targetTicks);
+        move(0,1,0, targetTicks);
     }
 
-    public void back(){
-        //TODO put the right values  -- Vishnu and Ani1
-        move(1,1,1);
+    public void rotateLeft90(int targetTicks){
+        move(0,1,0, targetTicks);
+    }
+
+    public void rotateRight90(int targetTicks){
+        move(0,1,0, targetTicks);
     }
 
 
-    public void left90(){
-        move(1,1,1);
-        //TODO Stop once we have moved 90 degrees-- Adi
+    public void strafeLeft(int targetTicks){
+        move(0,1,0, targetTicks);
     }
 
-    public void right90(){
-        move(1,1,1);
-        //TODO Stop once we have moved 90 degrees-- Adi
+
+    public void strafeRight(int targetTicks){
+        move(1,0,0, targetTicks);
     }
 
     /**
@@ -89,11 +87,8 @@ public class MacanumWheels {
         double frontRightPower = (y - x - turn) / denominator;
         double backRightPower = (y + x - turn) / denominator;
 
-        double powerRatio = 0.7;
-        frontLeftMotor.setPower(powerRatio * frontLeftPower);
-        backLeftMotor.setPower(powerRatio * backLeftPower);
-        frontRightMotor.setPower(powerRatio * frontRightPower);
-        backRightMotor.setPower(powerRatio * backRightPower);
+        double powerRatio = 0.2;
+        setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower, powerRatio);
     }
 
     public void setMode(DcMotor.RunMode mode){
@@ -106,36 +101,89 @@ public class MacanumWheels {
     /**
      * TODO move till desired movement is achieved
      */
-    public void move(double x, double y, double turn, int targetTicks){
+    public void move(double x, double y, double turn, int targetTicks) {
 
         setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(turn), 1);
+
         double frontLeftPower = (y + x + turn) / denominator;
         double backLeftPower = (y - x + turn) / denominator;
         double frontRightPower = (y - x - turn) / denominator;
         double backRightPower = (y + x - turn) / denominator;
 
-        double powerRatio = .2;
+        double powerRatio = 0.5;
 
         telemetry.addData("power ", String.format("%s %s %s %s", frontLeftPower, backLeftPower, frontRightPower, backRightPower));
         telemetry.update();
-        sleep(1000);
+
+        setTargetPosition(targetTicks, frontLeftPower, backLeftPower, frontRightPower, backRightPower);
+
+        setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        telemetry.addData("power ", "before set power");
+        telemetry.update();
+
+        sleep(2000);
+
+        setPower(frontLeftPower, backLeftPower, frontRightPower, backRightPower, powerRatio);
+        runtime.reset();
+        while (runtime.seconds() < 1.8 && isAnyMotorBusy()){
+            telemetry.addData("Currently at",  " at %7d :%7d :%7d :%7d",
+                    frontLeftMotor.getCurrentPosition(), frontRightMotor.getCurrentPosition(), backRightMotor.getCurrentPosition(), backLeftMotor.getCurrentPosition());
+            telemetry.addData("isbusy",  " at %s :%s :%s :%s",
+                    frontLeftMotor.isBusy(), frontRightMotor.isBusy(), backRightMotor.isBusy(), backLeftMotor.isBusy());
+
+            sleep(300);
+        }
+//        telemetry.update();
+
+        setPower(0, 0, 0, 0, 0);
+
+        sleep(10000);
+
+    }
+
+    public void setTargetPosition(int targetTicks, double frontLeftPower, double backLeftPower, double frontRightPower, double backRightPower) {
+
+        telemetry.addData("current position ", frontLeftMotor.getCurrentPosition());
+        telemetry.addData("current position ", backLeftMotor.getCurrentPosition());
+        telemetry.addData("current position ", frontRightMotor.getCurrentPosition());
+        telemetry.addData("current position ", backRightMotor.getCurrentPosition());
+        telemetry.addData("target position ", frontLeftMotor.getCurrentPosition() + (int) (frontLeftPower * targetTicks));
+        telemetry.addData("target position ", backLeftMotor.getCurrentPosition() +(int) (backLeftPower * targetTicks));
+        telemetry.addData("target position ", frontRightMotor.getCurrentPosition() +(int) (frontRightPower * targetTicks));
+        telemetry.addData("target position ", backRightMotor.getCurrentPosition() +(int) (backRightPower * targetTicks));
+        telemetry.update();
+        sleep(2000);
+
+        frontLeftMotor.setTargetPosition(frontLeftMotor.getCurrentPosition() + (int) (frontLeftPower * targetTicks));
+        backLeftMotor.setTargetPosition(backLeftMotor.getCurrentPosition() +(int) (backLeftPower * targetTicks));
+        frontRightMotor.setTargetPosition(frontRightMotor.getCurrentPosition() +(int) (frontRightPower * targetTicks));
+        backRightMotor.setTargetPosition(backRightMotor.getCurrentPosition() +(int) (backRightPower * targetTicks));
+
+
+    }
+
+    public boolean isAnyMotorBusy() {
+        return frontLeftMotor.isBusy() && backLeftMotor.isBusy() && frontRightMotor.isBusy() && backRightMotor.isBusy();
+    }
+
+
+
+    public void setPower(double frontLeftPower, double backLeftPower, double frontRightPower, double backRightPower, double powerRatio) {
+        telemetry.addData("power ", powerRatio * frontLeftPower);
+        telemetry.addData("power ", powerRatio * backLeftPower);
+        telemetry.addData("power ", powerRatio * frontRightPower);
+        telemetry.addData("power ", powerRatio * backRightPower);
+
+        //        telemetry.update();
 
         frontLeftMotor.setPower(powerRatio * frontLeftPower);
         backLeftMotor.setPower(powerRatio * backLeftPower);
         frontRightMotor.setPower(powerRatio * frontRightPower);
         backRightMotor.setPower(powerRatio * backRightPower);
-
-        frontLeftMotor.setTargetPosition((int) targetTicks);
-        backLeftMotor.setTargetPosition((int) targetTicks);
-        frontRightMotor.setTargetPosition((int) targetTicks);
-        backRightMotor.setTargetPosition((int) targetTicks);
-
-        setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-
     }
 
     public final void sleep(long milliseconds) {
