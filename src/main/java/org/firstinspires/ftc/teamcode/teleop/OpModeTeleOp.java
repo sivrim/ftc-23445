@@ -1,6 +1,5 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.teleop;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -34,7 +33,7 @@ public class OpModeTeleOp extends LinearOpMode {
         TouchSensor touchSensor;  // Touch sensor Object
 
         DcMotor armMotor = hardwareMap.dcMotor.get("armMotor");
-        MacanumWheels wheels = new MacanumWheels(hardwareMap, telemetry);
+        MacanumWheelsTeleop wheels = new MacanumWheelsTeleop(hardwareMap, telemetry);
         Servo clawServo = hardwareMap.servo.get("clawServo");
 
         DcMotor armMotor2 = hardwareMap.dcMotor.get("armMotor2");

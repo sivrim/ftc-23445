@@ -25,7 +25,7 @@ public class OpModeAuto extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private TfodProcessor tfod;
     private VisionPortal visionPortal;
-    MacanumWheels wheels;
+    MacanumWheelsAuton wheels;
     Servo clawServo;
     DcMotor armMotor2;
 
@@ -34,7 +34,7 @@ public class OpModeAuto extends LinearOpMode {
         try {
             initTfod();
 
-            wheels = new MacanumWheels(hardwareMap, telemetry);
+            wheels = new MacanumWheelsAuton(hardwareMap, telemetry);
             armMotor = hardwareMap.dcMotor.get("armMotor");
             clawServo = hardwareMap.servo.get("clawServo");
             armMotor2 = hardwareMap.dcMotor.get("armMotor2");
