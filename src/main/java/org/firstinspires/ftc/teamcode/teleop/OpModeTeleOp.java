@@ -1,13 +1,17 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.HardwareDevice;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 import java.util.List;
 
@@ -32,11 +36,14 @@ public class OpModeTeleOp extends LinearOpMode {
 
         TouchSensor touchSensor;  // Touch sensor Object
 
+
         DcMotor armMotor = hardwareMap.dcMotor.get("armMotor");
         MacanumWheelsTeleop wheels = new MacanumWheelsTeleop(hardwareMap, telemetry);
         Servo clawServo = hardwareMap.servo.get("clawServo");
         Servo droneServo = hardwareMap.servo.get("droneServo");
         DcMotor armMotor2 = hardwareMap.dcMotor.get("armMotor2");
+
+        DistanceSensor throttleSensor = hardwareMap.get(DistanceSensor.class, "slow");
 
         touchSensor = hardwareMap.get(TouchSensor.class, "sensor_touch");
 
@@ -62,7 +69,18 @@ public class OpModeTeleOp extends LinearOpMode {
             double chassisTurn = gamepad1.right_stick_x;
             //  System.out.println("chassisTurn is " + chassisTurn);
             //  double armTurn = gamepad2.right_stick_x;
-            wheels.move(chassisX, chassisY, chassisTurn);
+
+            double power = 0.7;
+            if(throttleSensor != null){
+                telemetry.addData("distance sensor", "present");
+                double distance = throttleSensor.getDistance(DistanceUnit.INCH);
+                telemetry.addData("distance sensor", "distance is " + distance);
+                if(distance > 0.0 && distance < 10 && chassisY > 0.5){
+                    power = .2;
+                }
+                telemetry.addData("distance sensor", "power is " + power);
+            }
+            wheels.move(chassisX, chassisY, chassisTurn, power);
 
             //System.out.println("dpadUp is " + dpadUp);
             //System.out.println("dpadDown is " + dpadDown);
