@@ -80,6 +80,7 @@ public class OpModeTeleOp extends LinearOpMode {
                 }
                 telemetry.addData("distance sensor", "power is " + power);
             }
+            telemetry.update();
             wheels.move(chassisX, chassisY, chassisTurn, power);
 
             //System.out.println("dpadUp is " + dpadUp);
