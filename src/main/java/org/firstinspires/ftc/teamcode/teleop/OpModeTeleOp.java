@@ -35,7 +35,7 @@ public class OpModeTeleOp extends LinearOpMode {
         DcMotor armMotor = hardwareMap.dcMotor.get("armMotor");
         MacanumWheelsTeleop wheels = new MacanumWheelsTeleop(hardwareMap, telemetry);
         Servo clawServo = hardwareMap.servo.get("clawServo");
-
+        Servo droneServo = hardwareMap.servo.get("droneServo");
         DcMotor armMotor2 = hardwareMap.dcMotor.get("armMotor2");
 
         touchSensor = hardwareMap.get(TouchSensor.class, "sensor_touch");
@@ -45,8 +45,11 @@ public class OpModeTeleOp extends LinearOpMode {
 
         clawServo.setPosition(clawOffset);
 
+        droneServo.setPosition(0);
+
         armInit = armMotor.getTargetPosition();
         armInit2 = armMotor2.getTargetPosition();
+        //droneServo.setPosition(-1);
         waitForStart();
 
         if (isStopRequested()) return;
@@ -80,6 +83,19 @@ public class OpModeTeleOp extends LinearOpMode {
             else if (gamepad2.dpad_down)
                 armOffset -= ARM_SPEED;
             armOffset = Range.clip(armOffset, 0.0, 1.0);
+
+            if (gamepad2.y) {
+                droneServo.setPosition(1);
+                telemetry.addData("Drone Servo", "Pressed gamepad2");
+                telemetry.update();
+
+            }
+
+            if (gamepad1.y) {
+                droneServo.setPosition(0);
+                telemetry.addData("Drone Servo", "Pressed gamepad1");
+                telemetry.update();
+            }
 
             telemetry.addData("claw", "Offset = %.2f", clawOffset);
             telemetry.addData("clawfrom servo", "Offset = %.2f", clawServo.getPosition());
