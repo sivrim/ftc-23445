@@ -39,7 +39,7 @@ public class TimeBasedAutoBase extends LinearOpMode {
             park();
             telemetry.addData("Path", "Complete");
             telemetry.update();
-            sleep(2000);
+            sleep(500);
         } catch (Exception ex) {
             ex.printStackTrace();
         } finally {
@@ -60,7 +60,7 @@ public class TimeBasedAutoBase extends LinearOpMode {
 
     private void backStageStuff() {
 
-        log("arm current position", armMotor.getCurrentPosition(), 1000);
+        log("arm current position", armMotor.getCurrentPosition(), 500);
 
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -72,7 +72,7 @@ public class TimeBasedAutoBase extends LinearOpMode {
             idle();
         }
 
-        log("arm current position", armMotor2.getCurrentPosition(), 1000);
+        log("arm current position", armMotor2.getCurrentPosition(), 500);
 
         armMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -84,12 +84,12 @@ public class TimeBasedAutoBase extends LinearOpMode {
             idle();
         }
 
-        log("claw position position", clawServo.getPosition(), 2000);
+        log("claw position position", clawServo.getPosition(), 100);
 
         clawServo.setPosition(0.8);
 
-        log("arm current position", armMotor2.getCurrentPosition(), 2000);
-        log("claw position position", clawServo.getPosition(), 2000);
+        log("arm current position", armMotor2.getCurrentPosition(), 500);
+        log("claw position position", clawServo.getPosition(), 500);
 
     }
 
@@ -214,7 +214,7 @@ public class TimeBasedAutoBase extends LinearOpMode {
 //        visionPortal.resumeStreaming();
         telemetry.addData(" > Camera Status", visionPortal.getCameraState());
         telemetry.update();
-        sleep(1000);
+        sleep(500);
         List<Recognition> currentRecognitions = tfod.getRecognitions();
         //      visionPortal.stopStreaming();
         telemetry.addData(" > Camera Status", visionPortal.getCameraState());
