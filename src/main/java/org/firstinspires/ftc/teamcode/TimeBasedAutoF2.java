@@ -14,21 +14,21 @@ public class TimeBasedAutoF2 extends TimeBasedAutoBase {
         stopChassis();
 
         runtime.reset();
-        while (opModeIsActive() && runtime.seconds() < 1.39) {
+        while (opModeIsActive() && runtime.seconds() < 1.41) {
             move(0, 0, -1);
         }
         stopChassis();
 
 
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 4.85)) {
+        while (opModeIsActive() && (runtime.seconds() < 5.05)) {
             move(0, 1, 0);
         }
         stopChassis();
         runtime.reset();
 
 
-        while (opModeIsActive() && (runtime.seconds() < 1.8)) {
+        while (opModeIsActive() && (runtime.seconds() < 2.5)) {
             move(1, 0, 0);
         }
         stopChassis();

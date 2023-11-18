@@ -111,7 +111,7 @@ public class OpModeTeleOp extends LinearOpMode {
                       powerArmLY = 0;
               }
             armMotor.setPower(powerArmLY);
-            System.out.println("armMotor is " + armMotor);
+            //System.out.println("armMotor is " + armMotor);
 
             if (armMotor2 != null) {
                 double armRY = gamepad2.right_stick_y;
@@ -126,9 +126,9 @@ public class OpModeTeleOp extends LinearOpMode {
             }
 
             // Bring back to starting position to grab the pixel
-            if (gamepad2.a) {
-                armMotor.setTargetPosition(armInit);
-                armMotor2.setTargetPosition(armInit2);
+            if (gamepad2.x) {
+                armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+                armMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             }
             telemetry.addData("claw", "Offset = %.2f", clawOffset);
             telemetry.addData("clawfrom servo", "Offset = %.2f", clawServo.getPosition());

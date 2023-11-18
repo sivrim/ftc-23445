@@ -34,6 +34,18 @@ public class TimeBasedAutoBase extends LinearOpMode {
         try {
             initLocal();
             onStart();
+
+
+            armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            armMotor.setPower(1);
+            armMotor.setTargetPosition(1300);
+            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            runtime.reset();
+            while (runtime.seconds() < 2.0 && armMotor.isBusy()) {
+                idle();
+            }
+
             goToBackStage();
             backStageStuff();
             park();
@@ -65,7 +77,7 @@ public class TimeBasedAutoBase extends LinearOpMode {
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         armMotor.setPower(1);
-        armMotor.setTargetPosition(5300);
+        armMotor.setTargetPosition(4400);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         runtime.reset();
         while (runtime.seconds() < 2.0 && armMotor.isBusy()) {
