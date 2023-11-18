@@ -17,7 +17,7 @@ import org.firstinspires.ftc.vision.tfod.TfodProcessor;
 import java.util.List;
 
 
-@Autonomous(name = "AutoTimedf4", group = "Furious Frogs")
+@Autonomous(name = "AutoTimedF4", group = "Furious Frogs")
 //@Disabled
 public class TimeBasedAutoF4 extends TimeBasedAutoBase {
     public void goToBackStage() {
