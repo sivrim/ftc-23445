@@ -15,7 +15,7 @@ public class TimeBasedAutoA2 extends TimeBasedAutoBase {
 
         //strafe
         runtime.reset();
-        while (opModeIsActive() && runtime.seconds() < 2.02) {
+        while (opModeIsActive() && runtime.seconds() < 1.9) {
             move(1, 0, 0);
         }
         stopChassis();
@@ -47,7 +47,7 @@ public class TimeBasedAutoA2 extends TimeBasedAutoBase {
 
         //go straight through the door
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 5.85)) {
+        while (opModeIsActive() && (runtime.seconds() < 5.75)) {
             move(0, 1, 0);
         }
         stopChassis();
