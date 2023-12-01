@@ -12,14 +12,14 @@ public class TimeBasedAutoF2 extends TimeBasedAutoBase {
             move(0, 1, 0);
         }
         stopChassis();
-
+        displayImuTelemetryData();
         //strafe
         runtime.reset();
-        while (opModeIsActive() && runtime.seconds() < 2.02) {
+        while (opModeIsActive() && runtime.seconds() < 1.9) {
             move(-1, 0, 0);
         }
         stopChassis();
-
+        displayImuTelemetryData();
 
         //go straight
         runtime.reset();
@@ -27,7 +27,7 @@ public class TimeBasedAutoF2 extends TimeBasedAutoBase {
             move(0, 1, 0);
         }
         stopChassis();
-
+        displayImuTelemetryData();
 
         //strafe
         runtime.reset();
@@ -35,7 +35,7 @@ public class TimeBasedAutoF2 extends TimeBasedAutoBase {
             move(1, 0, 0);
         }
         stopChassis();
-
+        displayImuTelemetryData();
 
         //rotate
         runtime.reset();
@@ -43,14 +43,15 @@ public class TimeBasedAutoF2 extends TimeBasedAutoBase {
             move(0, 0, -1);
         }
         stopChassis();
-
+        displayImuTelemetryData();
 
         //go straight through the door
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 5.85)) {
+        while (opModeIsActive() && (runtime.seconds() < 5.75)) {
             move(0, 1, 0);
         }
         stopChassis();
+        displayImuTelemetryData();
         runtime.reset();
 
         //strafe
@@ -58,6 +59,7 @@ public class TimeBasedAutoF2 extends TimeBasedAutoBase {
             move(1, 0, 0);
         }
         stopChassis();
+        displayImuTelemetryData();
         runtime.reset();
     }
 
