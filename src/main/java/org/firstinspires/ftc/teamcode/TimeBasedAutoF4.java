@@ -23,7 +23,7 @@ public class TimeBasedAutoF4 extends TimeBasedAutoBase {
     public void goToBackStage() {
         // move forward till center line
         runtime.reset();
-        while (opModeIsActive() && runtime.seconds() < 1.15) {
+        while (opModeIsActive() && runtime.seconds() < 0.85) {
             move(0, 1, 0);
         }
         stopChassis();
@@ -50,6 +50,8 @@ public class TimeBasedAutoF4 extends TimeBasedAutoBase {
         stopChassis();
 
         runtime.reset();
+
+        sleep(1000);
 
     }
     public void park() {

@@ -2,13 +2,19 @@ package org.firstinspires.ftc.teamcode;
 
 import android.util.Size;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.vision.VisionPortal;
 import org.firstinspires.ftc.vision.tfod.TfodProcessor;
@@ -21,31 +27,19 @@ public class TimeBasedAutoBase extends LinearOpMode {
     private TfodProcessor tfod;
     private VisionPortal visionPortal;
     DcMotor armMotor = null;
-    Servo clawServo;
+    Servo clawServoR,clawServoL ;
     DcMotor armMotor2;
     public DcMotor frontLeftMotor = null;
     public DcMotor backLeftMotor = null;
     public DcMotor frontRightMotor = null;
     public DcMotor backRightMotor = null;
-
+    IMU imu;
     @Override
     public void runOpMode() {
 
         try {
             initLocal();
             onStart();
-
-
-            armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            armMotor.setPower(1);
-            armMotor.setTargetPosition(1300);
-            armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            runtime.reset();
-            while (runtime.seconds() < 2.0 && armMotor.isBusy()) {
-                idle();
-            }
-
             goToBackStage();
             backStageStuff();
             park();
@@ -76,8 +70,8 @@ public class TimeBasedAutoBase extends LinearOpMode {
 
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        armMotor.setPower(1);
-        armMotor.setTargetPosition(4400);
+        armMotor.setPower(.8);
+        armMotor.setTargetPosition(4300);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         runtime.reset();
         while (runtime.seconds() < 2.0 && armMotor.isBusy()) {
@@ -96,12 +90,14 @@ public class TimeBasedAutoBase extends LinearOpMode {
             idle();
         }
 
-        log("claw position position", clawServo.getPosition(), 100);
+        //log("claw position position", clawServo.getPosition(), 100);
 
-        clawServo.setPosition(0.8);
+        clawServoR.setPosition(0.6);
+        clawServoL.setPosition(0.3);
 
-        log("arm current position", armMotor2.getCurrentPosition(), 500);
-        log("claw position position", clawServo.getPosition(), 500);
+        sleep(1000);
+        //log("arm current position", armMotor2.getCurrentPosition(), 500);
+       // log("claw position position", clawServo.getPosition(), 500);
 
     }
 
@@ -122,7 +118,7 @@ public class TimeBasedAutoBase extends LinearOpMode {
     private void onStart() {
         log("Status", "Ready to run", 0);
         // Wait for the game to start (driver presses PLAY)
-        initIMUmodule();
+       // initIMUmodule();
         waitForStart();
         log("Status", "Started", 100);
     }
@@ -172,9 +168,11 @@ public class TimeBasedAutoBase extends LinearOpMode {
 
     private void initNonChassis() {
         armMotor = hardwareMap.dcMotor.get("armMotor");
-        clawServo = hardwareMap.servo.get("clawServo");
+        clawServoR = hardwareMap.servo.get("clawServo");
+        clawServoL = hardwareMap.servo.get("clawServo2");
         armMotor2 = hardwareMap.dcMotor.get("armMotor2");
-        clawServo.setPosition(0.1);
+        clawServoR.setPosition(0.05);
+        clawServoL.setPosition(0.70);
     }
 
     private void initChassis() {
@@ -189,63 +187,12 @@ public class TimeBasedAutoBase extends LinearOpMode {
         frontRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         backRightMotor.setDirection(DcMotorSimple.Direction.REVERSE);
     }
-    private void initIMUmodule(){
-        imu = hardwareMap.get(IMU.class, "imu");
-
-        /* Define how the hub is mounted on the robot to get the correct Yaw, Pitch and Roll values.
-         *
-         * Two input parameters are required to fully specify the Orientation.
-         * The first parameter specifies the direction the printed logo on the Hub is pointing.
-         * The second parameter specifies the direction the USB connector on the Hub is pointing.
-         * All directions are relative to the robot, and left/right is as-viewed from behind the robot.
-         */
-
-        /* The next two lines define Hub orientation.
-         * The Default Orientation (shown) is when a hub is mounted horizontally with the printed logo pointing UP and the USB port pointing FORWARD.
-         *
-         * To Do:  EDIT these two lines to match YOUR mounting configuration.
-         */
-        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD;
-        RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.UP;
-
-        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
-
-        // Now initialize the IMU with this mounting orientation
-        // Note: if you choose two conflicting directions, this initialization will cause a code exception.
-        imu.initialize(new IMU.Parameters(orientationOnRobot));
-
-        // Loop and update the dashboard
-        while (!isStopRequested()) {
-
-            telemetry.addData("Hub orientation", "Logo=%s   USB=%s\n ", logoDirection, usbDirection);
-
-            // Check to see if heading reset is requested
-            if (gamepad1.y) {
-                telemetry.addData("Yaw", "Resetting\n");
-                imu.resetYaw();
-            } else {
-                telemetry.addData("Yaw", "Press Y (triangle) on Gamepad to reset\n");
-            }
-
-            // Retrieve Rotational Angles and Velocities
-            YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
-            AngularVelocity angularVelocity = imu.getRobotAngularVelocity(AngleUnit.DEGREES);
-
-            telemetry.addData("Yaw (Z)", "%.2f Deg. (Heading)", orientation.getYaw(AngleUnit.DEGREES));
-            telemetry.addData("Pitch (X)", "%.2f Deg.", orientation.getPitch(AngleUnit.DEGREES));
-            telemetry.addData("Roll (Y)", "%.2f Deg.\n", orientation.getRoll(AngleUnit.DEGREES));
-            telemetry.addData("Yaw (Z) velocity", "%.2f Deg/Sec", angularVelocity.zRotationRate);
-            telemetry.addData("Pitch (X) velocity", "%.2f Deg/Sec", angularVelocity.xRotationRate);
-            telemetry.addData("Roll (Y) velocity", "%.2f Deg/Sec", angularVelocity.yRotationRate);
-            telemetry.update();
-        }
-    }
-    }
 
     private void dropYellowPixel() {
         armMotor.setTargetPosition(100);
         armMotor2.setTargetPosition(-50);
-        clawServo.setPosition(0.8);
+        clawServoR.setPosition(0.6);
+        clawServoL.setPosition(0.3);
     }
 
     private void navigateToBackStage() {
@@ -260,9 +207,9 @@ public class TimeBasedAutoBase extends LinearOpMode {
 
     private void placePurplePixel() {
         armMotor2.setTargetPosition(-1000);
-        clawServo.setPosition(0.8);
+        clawServoR.setPosition(0.8);
         armMotor2.setTargetPosition(5);
-        clawServo.setPosition(0.3);
+        clawServoR.setPosition(0.3);
     }
 
     /**
@@ -322,6 +269,58 @@ public class TimeBasedAutoBase extends LinearOpMode {
 
         return stripe;
     }
+    private void initIMUmodule(){
+        imu = hardwareMap.get(IMU.class, "imu");
+
+        /* Define how the hub is mounted on the robot to get the correct Yaw, Pitch and Roll values.
+         *
+         * Two input parameters are required to fully specify the Orientation.
+         * The first parameter specifies the direction the printed logo on the Hub is pointing.
+         * The second parameter specifies the direction the USB connector on the Hub is pointing.
+         * All directions are relative to the robot, and left/right is as-viewed from behind the robot.
+         */
+
+        /* The next two lines define Hub orientation.
+         * The Default Orientation (shown) is when a hub is mounted horizontally with the printed logo pointing UP and the USB port pointing FORWARD.
+         *
+         * To Do:  EDIT these two lines to match YOUR mounting configuration.
+         */
+        RevHubOrientationOnRobot.LogoFacingDirection logoDirection = RevHubOrientationOnRobot.LogoFacingDirection.BACKWARD;
+        RevHubOrientationOnRobot.UsbFacingDirection  usbDirection  = RevHubOrientationOnRobot.UsbFacingDirection.UP;
+
+        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logoDirection, usbDirection);
+
+        // Now initialize the IMU with this mounting orientation
+        // Note: if you choose two conflicting directions, this initialization will cause a code exception.
+        imu.initialize(new IMU.Parameters(orientationOnRobot));
+
+        // Loop and update the dashboard
+        while (!isStopRequested()) {
+
+            telemetry.addData("Hub orientation", "Logo=%s   USB=%s\n ", logoDirection, usbDirection);
+
+            // Check to see if heading reset is requested
+            if (gamepad1.y) {
+                telemetry.addData("Yaw", "Resetting\n");
+                imu.resetYaw();
+            } else {
+                telemetry.addData("Yaw", "Press Y (triangle) on Gamepad to reset\n");
+            }
+
+            // Retrieve Rotational Angles and Velocities
+            YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
+            AngularVelocity angularVelocity = imu.getRobotAngularVelocity(AngleUnit.DEGREES);
+
+            telemetry.addData("Yaw (Z)", "%.2f Deg. (Heading)", orientation.getYaw(AngleUnit.DEGREES));
+            telemetry.addData("Pitch (X)", "%.2f Deg.", orientation.getPitch(AngleUnit.DEGREES));
+            telemetry.addData("Roll (Y)", "%.2f Deg.\n", orientation.getRoll(AngleUnit.DEGREES));
+            telemetry.addData("Yaw (Z) velocity", "%.2f Deg/Sec", angularVelocity.zRotationRate);
+            telemetry.addData("Pitch (X) velocity", "%.2f Deg/Sec", angularVelocity.xRotationRate);
+            telemetry.addData("Roll (Y) velocity", "%.2f Deg/Sec", angularVelocity.yRotationRate);
+            telemetry.update();
+        }
+    }
+
 
 
     public boolean inRange(double distance, int start, int end) {
