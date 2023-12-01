@@ -23,15 +23,8 @@ public class TimeBasedAutoA4 extends TimeBasedAutoBase {
     public void goToBackStage() {
         // move forward till center line
         runtime.reset();
-        while (opModeIsActive() && runtime.seconds() < 1.15) {
+        while (opModeIsActive() && runtime.seconds() < 0.4) {
             move(0, 1, 0);
-        }
-        stopChassis();
-
-        //strafe a little
-        runtime.reset();
-        while (opModeIsActive() && runtime.seconds() < .22) {
-            move(-1, 0, 0);
         }
         stopChassis();
 
@@ -42,10 +35,16 @@ public class TimeBasedAutoA4 extends TimeBasedAutoBase {
         }
         stopChassis();
 
-        //go forward
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.74)) {
+        while (opModeIsActive() && runtime.seconds() < 1.8) {
             move(0, 1, 0);
+        }
+        stopChassis();
+
+        //strafe a little
+        runtime.reset();
+        while (opModeIsActive() && runtime.seconds() < 1.2) {
+            move(1, 0, 0);
         }
         stopChassis();
 

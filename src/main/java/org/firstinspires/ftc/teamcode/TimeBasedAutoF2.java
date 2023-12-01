@@ -8,53 +8,28 @@ public class TimeBasedAutoF2 extends TimeBasedAutoBase {
     public void goToBackStage() {
         //go straight
         runtime.reset();
-        while (opModeIsActive() && runtime.seconds() < 0.58) {
+        while (opModeIsActive() && runtime.seconds() < 2.9) {
             move(0, 1, 0);
         }
         stopChassis();
-
-        //strafe
-        runtime.reset();
-        while (opModeIsActive() && runtime.seconds() < 2.02) {
-            move(-1, 0, 0);
-        }
-        stopChassis();
-
-
-        //go straight
-        runtime.reset();
-        while (opModeIsActive() && runtime.seconds() < 2.40) {
-            move(0, 1, 0);
-        }
-        stopChassis();
-
-
-        //strafe
-        runtime.reset();
-        while (opModeIsActive() && runtime.seconds() < .22) {
-            move(1, 0, 0);
-        }
-        stopChassis();
-
 
         //rotate
         runtime.reset();
-        while (opModeIsActive() && runtime.seconds() < 1.50) {
+        while (opModeIsActive() && runtime.seconds() < 1.49) {
             move(0, 0, -1);
         }
         stopChassis();
 
-
         //go straight through the door
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 5.85)) {
+        while (opModeIsActive() && (runtime.seconds() < 4.78)) {
             move(0, 1, 0);
         }
         stopChassis();
         runtime.reset();
 
         //strafe
-        while (opModeIsActive() && (runtime.seconds() < 2.3)) {
+        while (opModeIsActive() && (runtime.seconds() < 2.0)) {
             move(1, 0, 0);
         }
         stopChassis();
@@ -73,7 +48,7 @@ public class TimeBasedAutoF2 extends TimeBasedAutoBase {
 
         runtime.reset();
 
-        while (opModeIsActive() && (runtime.seconds() < 2.1)) {
+        while (opModeIsActive() && (runtime.seconds() < 2.0)) {
             move(-1, 0, 0);
         }
         stopChassis();

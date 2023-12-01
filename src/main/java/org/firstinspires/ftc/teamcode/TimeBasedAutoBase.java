@@ -71,7 +71,7 @@ public class TimeBasedAutoBase extends LinearOpMode {
         armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         armMotor.setPower(.8);
-        armMotor.setTargetPosition(4300);
+        armMotor.setTargetPosition(4000);
         armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         runtime.reset();
         while (runtime.seconds() < 2.0 && armMotor.isBusy()) {
@@ -82,8 +82,8 @@ public class TimeBasedAutoBase extends LinearOpMode {
 
         armMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         armMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        armMotor2.setPower(.6);
-        armMotor2.setTargetPosition(1200);
+        armMotor2.setPower(.4);
+        armMotor2.setTargetPosition(1150);
         armMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         runtime.reset();
         while (runtime.seconds() < 2.0 && armMotor2.isBusy()) {
@@ -96,6 +96,10 @@ public class TimeBasedAutoBase extends LinearOpMode {
         clawServoL.setPosition(0.3);
 
         sleep(1000);
+
+        clawServoR.setPosition(0.05);
+        clawServoL.setPosition(0.70);
+
         //log("arm current position", armMotor2.getCurrentPosition(), 500);
        // log("claw position position", clawServo.getPosition(), 500);
 
@@ -121,6 +125,19 @@ public class TimeBasedAutoBase extends LinearOpMode {
        // initIMUmodule();
         waitForStart();
         log("Status", "Started", 100);
+
+        log("arm current position", armMotor.getCurrentPosition(), 500);
+
+        armMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        armMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        armMotor.setPower(.8);
+        armMotor.setTargetPosition(1300);
+        armMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        runtime.reset();
+        while (runtime.seconds() < 2.0 && armMotor.isBusy()) {
+            idle();
+        }
+
     }
 
     /**
