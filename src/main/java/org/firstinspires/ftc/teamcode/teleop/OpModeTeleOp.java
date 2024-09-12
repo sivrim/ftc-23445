@@ -66,6 +66,7 @@ public class OpModeTeleOp extends LinearOpMode {
 
             //System.out.println("dpadUp is " + dpadUp);
             //System.out.println("dpadDown is " + dpadDown);
+            //I like cheese
             telemetry.addData("claw", "Offset = %.2f", clawServo.getPosition());
             telemetry.update();
             // Use gamepad dpad up and down open and close the claw
