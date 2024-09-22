@@ -16,7 +16,7 @@ public class TimeBasedAutoA2 extends TimeBasedAutoBase {
         //turn 180 degrees for april tags
         runtime.reset();
         while (opModeIsActive() && runtime.seconds() < 3.00) {
-            move(1, 0, 0);
+            move(, 0, -1);
         }
         stopChassis();
 
@@ -36,15 +36,17 @@ for (AprilTagDetection detection : aprilTag.getDetections())  {
         //turn 180 degrees back hanging specimen
         runtime.reset();
         while (opModeIsActive() && runtime.seconds() < 2.40) {
-            move(0, 1, 0);
+            move(0, 0, 1);
         }
         stopChassis();
 
        //hang specimen(cannot do with claw not being made)(will remove after claw is made)
+
+    
         //go backwards straight 
         runtime.reset();
-        while (opModeIsActive() && runtime.seconds() < .22) {
-            move(, -1, 0);
+        while (opModeIsActive() && runtime.seconds() < 0.58) {
+            move(0, -1, 0);
         }
         stopChassis();
 
