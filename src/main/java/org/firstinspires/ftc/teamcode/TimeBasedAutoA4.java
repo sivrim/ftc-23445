@@ -44,7 +44,7 @@ public class TimeBasedAutoA4 extends TimeBasedAutoBase {
 
         //go forward
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.74)) {
+        while (opModeIsActive() && (runtime.seconds() < 1.84)) {
             move(0, 1, 0);
         }
         stopChassis();
